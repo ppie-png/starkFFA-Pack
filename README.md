@@ -15,3 +15,4 @@ After every rebuild: commit + push, then update the sha1 on the server.
 |---|---|---|
 | Tooltip styles per weapon theme (`starkffa:wind`, …) | `assets/starkffa/textures/gui/sprites/tooltip/` | [docs/TOOLTIPS.md](docs/TOOLTIPS.md) |
 | HUD font `starkffa:hud` (cooldown bar, ability icons, spaces) | `assets/starkffa/font/hud.json` | [docs/HUD.md](docs/HUD.md) |
+| Item models: `starkffa:plunger_grappler` (+ `_empty`, `plunger_head`) | `assets/starkffa/items/`, `models/item/` | barrel points north (-z) |

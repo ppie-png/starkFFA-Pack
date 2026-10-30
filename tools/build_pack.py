@@ -5,6 +5,7 @@
 Contents
   tooltip styles  starkffa:<theme>   gradient tooltip background + frame per weapon theme
                                      (item component `tooltip_style`, see docs/TOOLTIPS.md)
+  items starkffa:plunger_grappler   3D plunger grappler (+ _empty while the plunger is out, plunger_head for the anchor)
   font starkffa:hud                  HUD glyphs for the action bar: bar segment, ability icons,
                                      pixel-exact spaces (see docs/HUD.md)
 Add a weapon theme: add an entry to THEMES (+ an icon in ICONS) and rebuild.
@@ -37,6 +38,9 @@ THEMES = {
     "wind": dict(bg_top=hx("#14303F", 242), bg_bottom=hx("#0B1322", 242),
                  frame_top=hx("#B8F6FF"), frame_bottom=hx("#3F86B4", 230),
                  accent="#A0F0FF"),
+    "hook": dict(bg_top=hx("#3A2318", 242), bg_bottom=hx("#170D0A", 242),
+                 frame_top=hx("#FFC59A"), frame_bottom=hx("#B5542A", 230),
+                 accent="#FFB37A"),
 }
 
 # ------------------------------------------------------------------ tooltip textures
@@ -121,6 +125,17 @@ ICONS = {
         "..####.#.",
         "......#..",
     ],
+    "hook": [            # plunger: cup on the left, stick to the right
+        "..#......",
+        ".##......",
+        "###......",
+        "#########",
+        "#########",
+        "###......",
+        ".##......",
+        "..#......",
+        ".........",
+    ],
 }
 def icon(rows, top, bottom):
     h = len(rows); wd = len(rows[0])
@@ -134,6 +149,7 @@ def icon(rows, top, bottom):
 w(f"assets/{NS}/textures/font/hud/segment.png", segment())
 w(f"assets/{NS}/textures/font/hud/diamond.png", diamond())
 w(f"assets/{NS}/textures/font/hud/icon_wind.png", icon(ICONS["wind"], hx("#E8FDFF"), hx("#5FB8D6")))
+w(f"assets/{NS}/textures/font/hud/icon_hook.png", icon(ICONS["hook"], hx("#FFC59A"), hx("#D6453D")))
 
 SPACES = {"": -1, "": -2, "": -4, "": -8,
           "": 1, "": 2, "": 4, "": 8}
@@ -144,6 +160,77 @@ w(f"assets/{NS}/font/hud.json", {"providers": [
     {"type": "bitmap", "file": f"{NS}:font/hud/icon_wind.png", "ascent": 8, "height": 9, "chars": [""]},
     {"type": "reference", "id": "minecraft:default"},
 ]})
+
+
+# ------------------------------------------------------------------ 3D item models
+# Low-poly cuboid models, textured from one 16x16 swatch atlas (4x4 px per colour).
+# Convention: barrel points NORTH (-z) = forward in the player's hand.
+SWATCH = [  # index -> colour
+    "#23324A", "#FF9F5A", "#3A3F4A", "#2A2422",   # 0 body navy, 1 accent orange, 2 dark metal, 3 grip
+    "#C88A4E", "#D6453D", "#9E2B26", "#E8D9B0",   # 4 wood stick, 5 rubber red, 6 rubber rim, 7 rope
+    "#9AA6B5", "#FFD3A8", "#1A2333", "#FFFFFF",   # 8 light metal, 9 warm light, 10 deep navy, 11 white
+]
+def atlas():
+    im = Image.new("RGBA", (16, 16), (0, 0, 0, 0)); px = im.load()
+    import random; rng = random.Random(7)
+    for i, c in enumerate(SWATCH):
+        base = hx(c); sx, sy = (i % 4) * 4, (i // 4) * 4
+        for y in range(4):
+            for x in range(4):
+                k = 1.08 if y == 0 else (0.9 if y == 3 else 1.0)
+                k *= 1 + (rng.random() - .5) * .06
+                px[sx + x, sy + y] = tuple(min(255, int(v * k)) for v in base[:3]) + (255,)
+    return im
+w(f"assets/{NS}/textures/item/atlas_tools.png", atlas())
+
+def el(frm, to, sw, rot=None):
+    sx, sy = (sw % 4) * 4, (sw // 4) * 4
+    uv = [sx + .5, sy + .5, sx + 3.5, sy + 3.5]
+    e = {"from": frm, "to": to,
+         "faces": {f: {"uv": uv, "texture": "#t"} for f in ("north", "east", "south", "west", "up", "down")}}
+    if rot: e["rotation"] = rot
+    return e
+
+GUN_BODY = [
+    el([7, 0, 9], [9, 6, 11.5], 3, {"angle": -22.5, "axis": "x", "origin": [8, 6, 10]}),   # grip
+    el([6.5, 5, 4], [9.5, 8.5, 13], 0),          # body
+    el([6.4, 6.2, 5], [9.6, 7.2, 12], 1),        # orange stripe
+    el([6.8, 5.3, 13], [9.2, 8.2, 14], 2),       # rear cap
+    el([7, 5.5, 0.5], [9, 8, 4], 2),             # barrel
+    el([6.7, 5.2, 1], [9.3, 8.3, 2], 1),         # barrel ring
+    el([7.5, 3.8, 8], [8.5, 5, 9], 2),           # trigger
+    el([7.2, 8.5, 6], [8.8, 9.6, 10], 7),        # rope coil
+    el([7.6, 8.5, 11], [8.4, 9.3, 12.5], 8),     # sight
+]
+PLUNGER = [
+    el([7.5, 6.25, -4], [8.5, 7.25, 0.5], 4),    # wooden stick
+    el([6.9, 5.65, -4.3], [9.1, 7.85, -3.6], 5), # cup neck (bell shape)
+    el([6.2, 4.95, -5.2], [9.8, 8.55, -4.3], 5), # cup body
+    el([5.7, 4.45, -6], [10.3, 9.05, -5.2], 5),  # cup mouth
+    el([5.4, 4.15, -6.5], [10.6, 9.35, -6], 6),  # cup rim
+]
+GUN_DISPLAY = {
+    "thirdperson_righthand": {"rotation": [0, 0, 0], "translation": [0, 2.5, 2], "scale": [0.6, 0.6, 0.6]},
+    "thirdperson_lefthand":  {"rotation": [0, 0, 0], "translation": [0, 2.5, 2], "scale": [0.6, 0.6, 0.6]},
+    "firstperson_righthand": {"rotation": [0, -5, 0], "translation": [1.5, 3.5, 1], "scale": [0.7, 0.7, 0.7]},
+    "firstperson_lefthand":  {"rotation": [0, 5, 0], "translation": [1.5, 3.5, 1], "scale": [0.7, 0.7, 0.7]},
+    "gui":    {"rotation": [20, -90, 0], "translation": [-1.5, -1, 0], "scale": [0.75, 0.75, 0.75]},
+    "ground": {"rotation": [0, 0, 0], "translation": [0, 2, 0], "scale": [0.45, 0.45, 0.45]},
+    "fixed":  {"rotation": [0, -90, 0], "translation": [-1.5, 0, 0], "scale": [0.8, 0.8, 0.8]},
+}
+def model(elements, display=None):
+    m = {"textures": {"t": f"{NS}:item/atlas_tools", "particle": f"{NS}:item/atlas_tools"}, "elements": elements}
+    if display: m["display"] = display
+    return m
+w(f"assets/{NS}/models/item/plunger_grappler.json", model(GUN_BODY + PLUNGER, GUN_DISPLAY))
+w(f"assets/{NS}/models/item/plunger_grappler_empty.json", model(GUN_BODY, GUN_DISPLAY))
+# the plunger stuck in a wall / player (item_display); centred on the cup rim
+HEAD = [el([7.5, 7.5, 9], [8.5, 8.5, 15], 4),                       # stick sticking out
+        el([7, 7, 8.3], [9, 9, 9], 5), el([6.3, 6.3, 7.3], [9.7, 9.7, 8.3], 5),
+        el([5.8, 5.8, 6.5], [10.2, 10.2, 7.3], 5), el([5.5, 5.5, 6], [10.5, 10.5, 6.5], 6)]
+w(f"assets/{NS}/models/item/plunger_head.json", model(HEAD))
+for name in ("plunger_grappler", "plunger_grappler_empty", "plunger_head"):
+    w(f"assets/{NS}/items/{name}.json", {"model": {"type": "minecraft:model", "model": f"{NS}:item/{name}"}})
 
 # ------------------------------------------------------------------ pack.mcmeta + pack.png
 w("pack.mcmeta", {"pack": {
