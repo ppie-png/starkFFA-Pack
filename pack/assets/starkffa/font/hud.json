@@ -1,0 +1,48 @@
+{
+  "providers": [
+    {
+      "type": "space",
+      "advances": {
+        "": -1,
+        "": -2,
+        "": -4,
+        "": -8,
+        "": 1,
+        "": 2,
+        "": 4,
+        "": 8
+      }
+    },
+    {
+      "type": "bitmap",
+      "file": "starkffa:font/hud/segment.png",
+      "ascent": 7,
+      "height": 7,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "starkffa:font/hud/diamond.png",
+      "ascent": 5,
+      "height": 3,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "starkffa:font/hud/icon_wind.png",
+      "ascent": 8,
+      "height": 9,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "reference",
+      "id": "minecraft:default"
+    }
+  ]
+}

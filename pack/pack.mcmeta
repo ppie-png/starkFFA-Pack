@@ -1,0 +1,23 @@
+{
+  "pack": {
+    "description": [
+      {
+        "text": "StarkFFA",
+        "color": "#A0F0FF",
+        "bold": true
+      },
+      {
+        "text": "\nWeapons, HUD & tooltips",
+        "color": "#BDB2FF"
+      }
+    ],
+    "min_format": [
+      97,
+      0
+    ],
+    "max_format": [
+      97,
+      1
+    ]
+  }
+}
