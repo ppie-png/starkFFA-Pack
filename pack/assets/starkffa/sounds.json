@@ -1,4 +1,28 @@
 {
+  "void.launch": {
+    "subtitle": "subtitles.starkffa.void.launch",
+    "sounds": [
+      {
+        "name": "starkffa:void/launch"
+      }
+    ]
+  },
+  "void.hum": {
+    "subtitle": "subtitles.starkffa.void.hum",
+    "sounds": [
+      {
+        "name": "starkffa:void/hum"
+      }
+    ]
+  },
+  "void.collapse": {
+    "subtitle": "subtitles.starkffa.void.collapse",
+    "sounds": [
+      {
+        "name": "starkffa:void/collapse"
+      }
+    ]
+  },
   "grappler.fire": {
     "subtitle": "subtitles.starkffa.grappler.fire",
     "sounds": [

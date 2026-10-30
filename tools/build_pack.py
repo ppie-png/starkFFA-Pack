@@ -38,6 +38,9 @@ THEMES = {
     "wind": dict(bg_top=hx("#14303F", 242), bg_bottom=hx("#0B1322", 242),
                  frame_top=hx("#B8F6FF"), frame_bottom=hx("#3F86B4", 230),
                  accent="#A0F0FF"),
+    "void": dict(bg_top=hx("#24173A", 242), bg_bottom=hx("#0B0814", 242),
+                 frame_top=hx("#E2CCFF"), frame_bottom=hx("#6B3FB5", 230),
+                 accent="#C9A7FF"),
     "hook": dict(bg_top=hx("#3A2318", 242), bg_bottom=hx("#170D0A", 242),
                  frame_top=hx("#FFC59A"), frame_bottom=hx("#B5542A", 230),
                  accent="#FFB37A"),
@@ -150,6 +153,9 @@ w(f"assets/{NS}/textures/font/hud/segment.png", segment())
 w(f"assets/{NS}/textures/font/hud/diamond.png", diamond())
 w(f"assets/{NS}/textures/font/hud/icon_wind.png", icon(ICONS["wind"], hx("#E8FDFF"), hx("#5FB8D6")))
 w(f"assets/{NS}/textures/font/hud/icon_hook.png", icon(ICONS["hook"], hx("#FFC59A"), hx("#D6453D")))
+import sys; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import voidbow as _vb
+w(f"assets/{NS}/textures/font/hud/icon_void.png", _vb.icon())
 
 SPACES = {"": -1, "": -2, "": -4, "": -8,
           "": 1, "": 2, "": 4, "": 8}
@@ -232,15 +238,35 @@ w(f"assets/{NS}/models/item/plunger_head.json", model(HEAD))
 for name in ("plunger_grappler", "plunger_grappler_empty", "plunger_head"):
     w(f"assets/{NS}/items/{name}.json", {"model": {"type": "minecraft:model", "model": f"{NS}:item/{name}"}})
 
+
+# ------------------------------------------------------------------ Black Hole Bow (2D sprites, vanilla bow display)
+w(f"assets/{NS}/textures/item/void_bow.png", _vb.bow(None))
+for i in range(3): w(f"assets/{NS}/textures/item/void_bow_pulling_{i}.png", _vb.bow(i))
+for n in ["void_bow"] + [f"void_bow_pulling_{i}" for i in range(3)]:
+    w(f"assets/{NS}/models/item/{n}.json", {"parent": "minecraft:item/bow", "textures": {"layer0": f"{NS}:item/{n}"}})
+w(f"assets/{NS}/items/void_bow.json", {"model": {
+    "type": "minecraft:condition", "property": "minecraft:using_item",
+    "on_false": {"type": "minecraft:model", "model": f"{NS}:item/void_bow"},
+    "on_true": {"type": "minecraft:range_dispatch", "property": "minecraft:use_duration", "scale": 0.05,
+                "fallback": {"type": "minecraft:model", "model": f"{NS}:item/void_bow_pulling_0"},
+                "entries": [{"threshold": 0.65, "model": {"type": "minecraft:model", "model": f"{NS}:item/void_bow_pulling_1"}},
+                            {"threshold": 0.9, "model": {"type": "minecraft:model", "model": f"{NS}:item/void_bow_pulling_2"}}]}}})
+# the black hole itself: animated sprite for an item_display (billboard: center)
+w(f"assets/{NS}/textures/item/black_hole.png", _vb.black_hole())
+w(f"assets/{NS}/textures/item/black_hole.png.mcmeta", {"animation": {"frametime": 2, "interpolate": True}})
+w(f"assets/{NS}/models/item/black_hole.json", {"parent": "minecraft:item/generated", "textures": {"layer0": f"{NS}:item/black_hole"}})
+w(f"assets/{NS}/items/black_hole.json", {"model": {"type": "minecraft:model", "model": f"{NS}:item/black_hole"}})
+
 # ------------------------------------------------------------------ sounds (synthesised, see tools/sounds.py)
-import sys; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import sounds as _snd
 SOUND_DEFS = _snd.build(os.path.join(P, "assets"), NS)
 w(f"assets/{NS}/sounds.json", SOUND_DEFS)
 w(f"assets/{NS}/lang/en_us.json", {
     "subtitles.starkffa.grappler.fire": "Plunger fires", "subtitles.starkffa.grappler.stick": "Plunger sticks",
     "subtitles.starkffa.grappler.reel": "Grappler reels in", "subtitles.starkffa.grappler.release": "Plunger pops off",
-    "subtitles.starkffa.grappler.yank": "Player yanked"})
+    "subtitles.starkffa.grappler.yank": "Player yanked",
+    "subtitles.starkffa.void.launch": "Black hole fired", "subtitles.starkffa.void.hum": "Black hole pulls",
+    "subtitles.starkffa.void.collapse": "Black hole collapses"})
 
 # ------------------------------------------------------------------ pack.mcmeta + pack.png
 w("pack.mcmeta", {"pack": {

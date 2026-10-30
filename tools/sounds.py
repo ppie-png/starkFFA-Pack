@@ -67,7 +67,31 @@ def yank():        # elastic twang rising
     whoosh = band(noise(.3), 500, 2500) * env(int(SR * .3), .02, .1) * .35
     return norm(mix(tw, whoosh))
 
-SOUNDS = {"grappler/fire": fire, "grappler/stick": stick, "grappler/reel": reel,
+def void_launch():  # deep "whum" with a reverse swell
+    n = .45; x = t(.4)
+    whum = np.sin(2 * np.pi * np.cumsum(70 + 40 * np.exp(-x / .08)) / SR) * env(len(x), .004, .16)
+    swell = band(noise(.25), 200, 1200) * np.linspace(0, 1, int(SR * .25)) ** 2 * .5
+    zap = sweep(1400, 300, .12, .5) * env(int(SR * .12), .001, .04) * .3
+    return norm(mix(at(swell, 0, n), at(whum, .12, n), at(zap, .14, n)))
+
+def void_hum():     # 1.5 s low drone that gets stronger, wobbling
+    n = 1.5; x = t(n)
+    f = 48 + 10 * x / n
+    drone = np.sin(2 * np.pi * np.cumsum(f) / SR) + .5 * np.sin(2 * np.pi * np.cumsum(f * 2.01) / SR)
+    wob = .6 + .4 * np.sin(2 * np.pi * (3 + 4 * x / n) * x)
+    air = low(noise(n), 500) * .25
+    e = np.clip(x / .2, 0, 1) * (0.6 + 0.4 * x / n) * np.clip((n - x) / .08, 0, 1)
+    return norm((drone * wob + air) * e, .8)
+
+def void_collapse(): # implosion: reverse suck then boom
+    n = .7
+    suck = band(noise(.25), 300, 3000) * np.linspace(0, 1, int(SR * .25)) ** 3
+    boom = sweep(90, 35, .4, .7) * env(int(SR * .4), .001, .13)
+    crack = high(noise(.03), 1500) * env(int(SR * .03), .0005, .008) * .6
+    return norm(mix(at(suck, 0, n), at(boom * 1.2, .24, n), at(crack, .24, n)))
+
+SOUNDS = {"void/launch": void_launch, "void/hum": void_hum, "void/collapse": void_collapse,
+          "grappler/fire": fire, "grappler/stick": stick, "grappler/reel": reel,
           "grappler/release": release, "grappler/yank": yank}
 
 def build(assets_dir, ns):

@@ -3,5 +3,8 @@
   "subtitles.starkffa.grappler.stick": "Plunger sticks",
   "subtitles.starkffa.grappler.reel": "Grappler reels in",
   "subtitles.starkffa.grappler.release": "Plunger pops off",
-  "subtitles.starkffa.grappler.yank": "Player yanked"
+  "subtitles.starkffa.grappler.yank": "Player yanked",
+  "subtitles.starkffa.void.launch": "Black hole fired",
+  "subtitles.starkffa.void.hum": "Black hole pulls",
+  "subtitles.starkffa.void.collapse": "Black hole collapses"
 }
