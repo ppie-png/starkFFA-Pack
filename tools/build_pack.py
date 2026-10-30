@@ -240,8 +240,9 @@ for name in ("plunger_grappler", "plunger_grappler_empty", "plunger_head"):
 
 
 # ------------------------------------------------------------------ Black Hole Bow (2D sprites, vanilla bow display)
-w(f"assets/{NS}/textures/item/void_bow.png", _vb.bow(None))
-for i in range(3): w(f"assets/{NS}/textures/item/void_bow_pulling_{i}.png", _vb.bow(i))
+# drawn with the arrow pointing top-right, vanilla bow textures point top-left -> rotate 90° CCW
+w(f"assets/{NS}/textures/item/void_bow.png", _vb.bow(None).rotate(90))
+for i in range(3): w(f"assets/{NS}/textures/item/void_bow_pulling_{i}.png", _vb.bow(i).rotate(90))
 for n in ["void_bow"] + [f"void_bow_pulling_{i}" for i in range(3)]:
     w(f"assets/{NS}/models/item/{n}.json", {"parent": "minecraft:item/bow", "textures": {"layer0": f"{NS}:item/{n}"}})
 w(f"assets/{NS}/items/void_bow.json", {"model": {
