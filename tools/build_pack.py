@@ -232,6 +232,16 @@ w(f"assets/{NS}/models/item/plunger_head.json", model(HEAD))
 for name in ("plunger_grappler", "plunger_grappler_empty", "plunger_head"):
     w(f"assets/{NS}/items/{name}.json", {"model": {"type": "minecraft:model", "model": f"{NS}:item/{name}"}})
 
+# ------------------------------------------------------------------ sounds (synthesised, see tools/sounds.py)
+import sys; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import sounds as _snd
+SOUND_DEFS = _snd.build(os.path.join(P, "assets"), NS)
+w(f"assets/{NS}/sounds.json", SOUND_DEFS)
+w(f"assets/{NS}/lang/en_us.json", {
+    "subtitles.starkffa.grappler.fire": "Plunger fires", "subtitles.starkffa.grappler.stick": "Plunger sticks",
+    "subtitles.starkffa.grappler.reel": "Grappler reels in", "subtitles.starkffa.grappler.release": "Plunger pops off",
+    "subtitles.starkffa.grappler.yank": "Player yanked"})
+
 # ------------------------------------------------------------------ pack.mcmeta + pack.png
 w("pack.mcmeta", {"pack": {
     "description": [

@@ -1,0 +1,42 @@
+{
+  "grappler.fire": {
+    "subtitle": "subtitles.starkffa.grappler.fire",
+    "sounds": [
+      {
+        "name": "starkffa:grappler/fire"
+      }
+    ]
+  },
+  "grappler.stick": {
+    "subtitle": "subtitles.starkffa.grappler.stick",
+    "sounds": [
+      {
+        "name": "starkffa:grappler/stick"
+      }
+    ]
+  },
+  "grappler.reel": {
+    "subtitle": "subtitles.starkffa.grappler.reel",
+    "sounds": [
+      {
+        "name": "starkffa:grappler/reel"
+      }
+    ]
+  },
+  "grappler.release": {
+    "subtitle": "subtitles.starkffa.grappler.release",
+    "sounds": [
+      {
+        "name": "starkffa:grappler/release"
+      }
+    ]
+  },
+  "grappler.yank": {
+    "subtitle": "subtitles.starkffa.grappler.yank",
+    "sounds": [
+      {
+        "name": "starkffa:grappler/yank"
+      }
+    ]
+  }
+}
