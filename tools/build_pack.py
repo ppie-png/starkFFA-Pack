@@ -312,6 +312,10 @@ w(f"assets/{NS}/items/repulsion_shield.json", {"model": {"type": "minecraft:cond
     "on_false": {"type": "minecraft:model", "model": f"{NS}:item/repulsion_shield"},
     "on_true": {"type": "minecraft:model", "model": f"{NS}:item/repulsion_shield_blocking"}}})
 
+# ------------------------------------------------------------------ arsenal v2 (3D voxel weapons, overrides the v1 assets above)
+import weapons3d as _w3
+for _name, _n in _w3.export_all(w, NS): print(f"  v2 {_name}: {_n} elements")
+
 # ------------------------------------------------------------------ sounds (synthesised, see tools/sounds.py)
 import sounds as _snd
 SOUND_DEFS = _snd.build(os.path.join(P, "assets"), NS)
