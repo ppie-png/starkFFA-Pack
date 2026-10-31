@@ -188,9 +188,8 @@ DESIGNS.update({"void_bow": void_bow, "repulsion_shield": repulsion_shield})
 
 # ---------------------------------------------------------------- export
 from voxels import to_model, atlas, check_bounds, handheld_display
-HANDHELD = {  # id: (design, grip voxel y, target length in px)
-    "wind_mace": (tempest_mace, 16, 30), "soul_blade": (soul_greatsword, 12, 31), "shadow_dagger": (shadow_kunai, 11, 23),
-    "blink_blade": (blink_katana, 12, 33), "storm_spear": (storm_spear, 30, 38), "frost_hammer": (frost_hammer, 18, 31),
+HANDHELD = {  # id: (design, grip voxel y, target length in px) - only hero items get a custom model
+    "wind_mace": (tempest_mace, 16, 30),
 }
 DIAG = {"angle": -45, "axis": "z", "origin": [8, 8, 8]}
 
@@ -215,38 +214,4 @@ def export_all(w, NS):
             gui = round(min(1.0, 15.5 / (L * 0.72)), 3)
             m = to_model(g, tex(name, g, dim), origin=origin, rot=DIAG, dim=dim, display=handheld_display(k, gui))
             check_bounds(m); w(f"assets/{NS}/models/item/{name}.json", m); item(name); built.append((name, len(m["elements"])))
-    # bow: 4 states, vanilla bow transforms, tilted +45 so the arrow points like vanilla
-    BOWROT = {"angle": 45, "axis": "z", "origin": [8, 8, 8]}
-    for p, name in enumerate(["void_bow", "void_bow_pulling_0", "void_bow_pulling_1", "void_bow_pulling_2"]):
-        g = void_bow(p)
-        m = to_model(g, tex(name, g, False), origin=(-3, -3, 5.5), rot=BOWROT, parent="minecraft:item/bow")
-        check_bounds(m); w(f"assets/{NS}/models/item/{name}.json", m); built.append((name, len(m["elements"])))
-    gcd = void_bow(0)
-    m = to_model(gcd, tex("void_bow_cd", gcd, True), origin=(-3, -3, 5.5), rot=BOWROT, parent="minecraft:item/bow", dim=True)
-    w(f"assets/{NS}/models/item/void_bow_cd.json", m)
-    w(f"assets/{NS}/items/void_bow.json", {"model": {
-        "type": "minecraft:condition", "property": "minecraft:using_item",
-        "on_false": {"type": "minecraft:model", "model": f"{NS}:item/void_bow"},
-        "on_true": {"type": "minecraft:range_dispatch", "property": "minecraft:use_duration", "scale": 0.05,
-                    "fallback": {"type": "minecraft:model", "model": f"{NS}:item/void_bow_pulling_0"},
-                    "entries": [{"threshold": 0.65, "model": {"type": "minecraft:model", "model": f"{NS}:item/void_bow_pulling_1"}},
-                                {"threshold": 0.9, "model": {"type": "minecraft:model", "model": f"{NS}:item/void_bow_pulling_2"}}]}}})
-    w(f"assets/{NS}/items/void_bow_cd.json", {"model": {
-        "type": "minecraft:condition", "property": "minecraft:using_item",
-        "on_false": {"type": "minecraft:model", "model": f"{NS}:item/void_bow_cd"},
-        "on_true": {"type": "minecraft:range_dispatch", "property": "minecraft:use_duration", "scale": 0.05,
-                    "fallback": {"type": "minecraft:model", "model": f"{NS}:item/void_bow_pulling_0"},
-                    "entries": [{"threshold": 0.65, "model": {"type": "minecraft:model", "model": f"{NS}:item/void_bow_pulling_1"}},
-                                {"threshold": 0.9, "model": {"type": "minecraft:model", "model": f"{NS}:item/void_bow_pulling_2"}}]}}})
-    # shield: vanilla shield frame (voxel*0.5 + (-10,-10,-5)), blocking pose via condition
-    import arsenal as _ar
-    for dim, suffix in ((False, ""), (True, "_cd")):
-        g = repulsion_shield()
-        t = tex("repulsion_shield" + suffix, g, dim)
-        for name, disp in (("repulsion_shield" + suffix, _ar.SHIELD_DISPLAY), ("repulsion_shield_blocking" + suffix, _ar.SHIELD_BLOCKING_DISPLAY)):
-            m = to_model(g, t, origin=(-10, -10, -5), dim=dim, display=disp); m["gui_light"] = "front"
-            check_bounds(m); w(f"assets/{NS}/models/item/{name}.json", m); built.append((name, len(m["elements"])))
-        w(f"assets/{NS}/items/repulsion_shield{suffix}.json", {"model": {"type": "minecraft:condition", "property": "minecraft:using_item",
-            "on_false": {"type": "minecraft:model", "model": f"{NS}:item/repulsion_shield{suffix}"},
-            "on_true": {"type": "minecraft:model", "model": f"{NS}:item/repulsion_shield_blocking{suffix}"}}})
     return built

@@ -250,19 +250,6 @@ for name in ("plunger_grappler", "plunger_grappler_empty", "plunger_head"):
     w(f"assets/{NS}/items/{name}.json", {"model": {"type": "minecraft:model", "model": f"{NS}:item/{name}"}})
 
 
-# ------------------------------------------------------------------ Black Hole Bow (2D sprites, vanilla bow display)
-# drawn with the arrow pointing top-right, vanilla bow textures point top-left -> rotate 90° CCW
-w(f"assets/{NS}/textures/item/void_bow.png", _vb.bow(None).rotate(90))
-for i in range(3): w(f"assets/{NS}/textures/item/void_bow_pulling_{i}.png", _vb.bow(i).rotate(90))
-for n in ["void_bow"] + [f"void_bow_pulling_{i}" for i in range(3)]:
-    w(f"assets/{NS}/models/item/{n}.json", {"parent": "minecraft:item/bow", "textures": {"layer0": f"{NS}:item/{n}"}})
-w(f"assets/{NS}/items/void_bow.json", {"model": {
-    "type": "minecraft:condition", "property": "minecraft:using_item",
-    "on_false": {"type": "minecraft:model", "model": f"{NS}:item/void_bow"},
-    "on_true": {"type": "minecraft:range_dispatch", "property": "minecraft:use_duration", "scale": 0.05,
-                "fallback": {"type": "minecraft:model", "model": f"{NS}:item/void_bow_pulling_0"},
-                "entries": [{"threshold": 0.65, "model": {"type": "minecraft:model", "model": f"{NS}:item/void_bow_pulling_1"}},
-                            {"threshold": 0.9, "model": {"type": "minecraft:model", "model": f"{NS}:item/void_bow_pulling_2"}}]}}})
 # the black hole itself: animated sprite for an item_display (billboard: center)
 w(f"assets/{NS}/textures/item/black_hole.png", _vb.black_hole())
 w(f"assets/{NS}/textures/item/black_hole.png.mcmeta", {"animation": {"frametime": 2, "interpolate": True}})
@@ -287,30 +274,11 @@ for n in ("black_hole_disk", "black_hole_lens"):
 
 
 
-# ------------------------------------------------------------------ W4-W9 arsenal
-def simple_item(name):
-    w(f"assets/{NS}/items/{name}.json", {"model": {"type": "minecraft:model", "model": f"{NS}:item/{name}"}})
-for name, img in (("soul_blade", _ar.soul_blade()), ("soul_blade_lit", _ar.soul_blade(True)),
-                  ("shadow_dagger", _ar.shadow_dagger()), ("blink_blade", _ar.blink_blade())):
-    w(f"assets/{NS}/textures/item/{name}.png", img)
-    w(f"assets/{NS}/models/item/{name}.json", {"parent": "minecraft:item/handheld", "textures": {"layer0": f"{NS}:item/{name}"}})
-    simple_item(name)
+# ------------------------------------------------------------------ effect models (not weapons)
 w(f"assets/{NS}/textures/item/atlas_arsenal.png", _ar.arsenal_atlas())
-for name, elements in (("storm_spear", _ar.spear()), ("frost_hammer", _ar.hammer())):
-    w(f"assets/{NS}/models/item/{name}.json", {"parent": "minecraft:item/handheld",
-        "textures": {"a": f"{NS}:item/atlas_arsenal", "particle": f"{NS}:item/atlas_arsenal"}, "elements": elements})
-    simple_item(name)
 w(f"assets/{NS}/models/item/ice_spike.json", {"textures": {"a": f"{NS}:item/atlas_arsenal", "particle": f"{NS}:item/atlas_arsenal"},
     "elements": _ar.ice_spike()})
-simple_item("ice_spike")
-w(f"assets/{NS}/textures/item/repulsion_shield_front.png", _ar.shield_front_texture())
-for name, disp in (("repulsion_shield", _ar.SHIELD_DISPLAY), ("repulsion_shield_blocking", _ar.SHIELD_BLOCKING_DISPLAY)):
-    w(f"assets/{NS}/models/item/{name}.json", {"gui_light": "front",
-        "textures": {"a": f"{NS}:item/atlas_arsenal", "f": f"{NS}:item/repulsion_shield_front", "particle": f"{NS}:item/atlas_arsenal"},
-        "elements": _ar.shield(), "display": disp})
-w(f"assets/{NS}/items/repulsion_shield.json", {"model": {"type": "minecraft:condition", "property": "minecraft:using_item",
-    "on_false": {"type": "minecraft:model", "model": f"{NS}:item/repulsion_shield"},
-    "on_true": {"type": "minecraft:model", "model": f"{NS}:item/repulsion_shield_blocking"}}})
+w(f"assets/{NS}/items/ice_spike.json", {"model": {"type": "minecraft:model", "model": f"{NS}:item/ice_spike"}})
 
 # ------------------------------------------------------------------ arsenal v2 (3D voxel weapons, overrides the v1 assets above)
 import weapons3d as _w3
