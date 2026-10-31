@@ -185,11 +185,13 @@ def iso_preview(grid, scale=6, dim=False, bg=(22, 26, 36), rotate_z=0.0):
 def handheld_display(k=1.0, gui=0.5):
     """Vanilla handheld transforms, scaled by k (models here are bigger than a 16px sprite)."""
     s3, s1 = round(0.85 * k, 3), round(0.68 * k, 3)
+    fp = round(0.68 * k * 0.55, 3)
     return {
         "thirdperson_righthand": {"rotation": [0, -90, 55], "translation": [0, 4.0, 0.5], "scale": [s3, s3, s3]},
         "thirdperson_lefthand": {"rotation": [0, 90, -55], "translation": [0, 4.0, 0.5], "scale": [s3, s3, s3]},
-        "firstperson_righthand": {"rotation": [0, -90, 25], "translation": [1.13, 3.2, 1.13], "scale": [s1, s1, s1]},
-        "firstperson_lefthand": {"rotation": [0, 90, -25], "translation": [1.13, 3.2, 1.13], "scale": [s1, s1, s1]},
+        # first person: keep the screen free for PvP (big models only in 3rd person / clips)
+        "firstperson_righthand": {"rotation": [0, -90, 25], "translation": [2.2, 2.0, 1.5], "scale": [fp, fp, fp]},
+        "firstperson_lefthand": {"rotation": [0, 90, -25], "translation": [2.2, 2.0, 1.5], "scale": [fp, fp, fp]},
         "gui": {"rotation": [0, 0, 0], "translation": [0, 0, 0], "scale": [gui, gui, gui]},
         "ground": {"rotation": [0, 0, 0], "translation": [0, 2, 0], "scale": [0.4 * k, 0.4 * k, 0.4 * k]},
         "fixed": {"rotation": [0, 180, 0], "translation": [0, 0, 0], "scale": [gui * 1.4, gui * 1.4, gui * 1.4]},
