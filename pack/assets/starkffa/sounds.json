@@ -1,4 +1,108 @@
 {
+  "soul.feast": {
+    "subtitle": "subtitles.starkffa.soul.feast",
+    "sounds": [
+      {
+        "name": "starkffa:soul/feast"
+      }
+    ]
+  },
+  "soul.drain": {
+    "subtitle": "subtitles.starkffa.soul.drain",
+    "sounds": [
+      {
+        "name": "starkffa:soul/drain"
+      }
+    ]
+  },
+  "soul.end": {
+    "subtitle": "subtitles.starkffa.soul.end",
+    "sounds": [
+      {
+        "name": "starkffa:soul/end"
+      }
+    ]
+  },
+  "shadow.smoke": {
+    "subtitle": "subtitles.starkffa.shadow.smoke",
+    "sounds": [
+      {
+        "name": "starkffa:shadow/smoke"
+      }
+    ]
+  },
+  "shadow.backstab": {
+    "subtitle": "subtitles.starkffa.shadow.backstab",
+    "sounds": [
+      {
+        "name": "starkffa:shadow/backstab"
+      }
+    ]
+  },
+  "blink.step": {
+    "subtitle": "subtitles.starkffa.blink.step",
+    "sounds": [
+      {
+        "name": "starkffa:blink/step"
+      }
+    ]
+  },
+  "blink.shatter": {
+    "subtitle": "subtitles.starkffa.blink.shatter",
+    "sounds": [
+      {
+        "name": "starkffa:blink/shatter"
+      }
+    ]
+  },
+  "shield.parry": {
+    "subtitle": "subtitles.starkffa.shield.parry",
+    "sounds": [
+      {
+        "name": "starkffa:shield/parry"
+      }
+    ]
+  },
+  "storm.lunge": {
+    "subtitle": "subtitles.starkffa.storm.lunge",
+    "sounds": [
+      {
+        "name": "starkffa:storm/lunge"
+      }
+    ]
+  },
+  "storm.zap": {
+    "subtitle": "subtitles.starkffa.storm.zap",
+    "sounds": [
+      {
+        "name": "starkffa:storm/zap"
+      }
+    ]
+  },
+  "frost.slam": {
+    "subtitle": "subtitles.starkffa.frost.slam",
+    "sounds": [
+      {
+        "name": "starkffa:frost/slam"
+      }
+    ]
+  },
+  "frost.shatter": {
+    "subtitle": "subtitles.starkffa.frost.shatter",
+    "sounds": [
+      {
+        "name": "starkffa:frost/shatter"
+      }
+    ]
+  },
+  "ui.refuel": {
+    "subtitle": "subtitles.starkffa.ui.refuel",
+    "sounds": [
+      {
+        "name": "starkffa:ui/refuel"
+      }
+    ]
+  },
   "void.rumble": {
     "subtitle": "subtitles.starkffa.void.rumble",
     "sounds": [

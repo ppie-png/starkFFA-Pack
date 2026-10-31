@@ -98,7 +98,106 @@ def void_rumble():   # 1.5 s sub rumble + rising airy whoosh, layered with void.
     e = np.clip(x / .25, 0, 1) * np.clip((n - x) / .1, 0, 1)
     return norm((sub * .9 + grit + rise) * e, .85)
 
-SOUNDS = {"void/rumble": void_rumble, "void/launch": void_launch, "void/hum": void_hum, "void/collapse": void_collapse,
+
+# ---------------------------------------------------------------- W4-W9 + UI
+def chime(freqs, sec, decay=.25, amp=1.0):
+    x = t(sec); out = np.zeros(len(x))
+    for i, f in enumerate(freqs): out += np.sin(2 * np.pi * f * x) * np.exp(-x / (decay * (1 - .15 * i))) / (1 + i * .6)
+    return out * np.clip(x / .004, 0, 1) * amp
+
+def soul_feast():   # ghostly inhale + bright soul chime
+    n = .8
+    inhale = band(noise(.45), 500, 3500) * np.linspace(0, 1, int(SR * .45)) ** 2 * .6
+    ch = chime([660, 990, 1320, 1760], .6, .3)
+    low_ = sweep(180, 260, .5) * env(int(SR * .5), .05, .25) * .4
+    return norm(mix(at(inhale, 0, n), at(ch, .38, n), at(low_, .3, n)))
+
+def soul_drain():   # soft "shhk" + tiny chime
+    n = .3
+    sh = band(noise(.12), 2000, 7000) * env(int(SR * .12), .002, .03) * .7
+    ch = chime([1320, 1980], .25, .08) * .5
+    return norm(mix(sh, at(ch, .03, n)), .7)
+
+def soul_end():     # fading whisper
+    n = .7; x = t(n)
+    wh = band(noise(n), 900, 4000) * (0.5 + 0.5 * np.sin(2 * np.pi * 7 * x)) * np.exp(-x / .25) * np.clip(x / .05, 0, 1)
+    return norm(wh, .6)
+
+def shadow_smoke(): # pressurised hiss burst
+    n = .9; x = t(n)
+    hiss = high(noise(n), 1800) * np.exp(-x / .3) * np.clip(x / .01, 0, 1)
+    whoomp = sweep(120, 50, .2) * env(int(SR * .2), .002, .07) * .9
+    return norm(mix(hiss * .8, whoomp))
+
+def shadow_backstab():  # whisper sting + crit stab
+    n = .5
+    sting = sweep(2400, 900, .12, .4) * env(int(SR * .12), .001, .04) * .6
+    stab = band(noise(.05), 800, 5000) * env(int(SR * .05), .0005, .012)
+    tail = band(noise(.3), 1200, 3500) * env(int(SR * .3), .02, .08) * .3
+    return norm(mix(stab, at(sting, .01, n), at(tail, .05, n)))
+
+def blink_step():   # glassy "zhip"
+    n = .35
+    z = sweep(400, 3200, .08, .5) * env(int(SR * .08), .001, .05) * .7
+    gl = chime([2093, 3136, 4186], .3, .07) * .6
+    air = band(noise(.1), 3000, 9000) * env(int(SR * .1), .001, .03) * .3
+    return norm(mix(z, at(gl, .05, n), air))
+
+def blink_shatter():  # glass shatter
+    n = .6; out = np.zeros(int(SR * n))
+    for i in range(14):
+        f = rng.uniform(2500, 7000); s0 = rng.uniform(0, .12)
+        out += at(chime([f, f * 1.5], .2, rng.uniform(.03, .08)) * rng.uniform(.3, .8), s0, n)
+    crack = high(noise(.04), 2500) * env(int(SR * .04), .0005, .01)
+    return norm(mix(out, crack))
+
+def shield_parry():  # deep "bwomm" + metallic ring
+    n = 1.0
+    bw = sweep(110, 55, .5, .6) * env(int(SR * .5), .002, .18)
+    ring = chime([523, 784, 1046, 1568], .9, .35) * .5
+    hit = band(noise(.03), 1000, 6000) * env(int(SR * .03), .0005, .008) * .7
+    return norm(mix(bw, ring, hit))
+
+def storm_lunge():   # crackle charge + thunder snap
+    n = .8; x = t(.35)
+    crackle = band(noise(.35), 2000, 8000) * (rng.random(len(x)) > .93) * np.linspace(.3, 1, len(x)) * 1.5
+    snap = high(noise(.05), 1500) * env(int(SR * .05), .0003, .015)
+    boom = sweep(90, 40, .45, .6) * env(int(SR * .45), .002, .15) * .9
+    return norm(mix(at(crackle, 0, n), at(snap, .33, n), at(boom, .34, n)))
+
+def storm_zap():     # short electric zap
+    n = .25; x = t(.15)
+    buzz = np.sign(np.sin(2 * np.pi * 180 * x)) * env(len(x), .001, .04) * .5
+    arc = band(noise(.15), 3000, 9000) * env(len(x), .001, .03)
+    return norm(mix(buzz, arc), .8)
+
+def frost_slam():    # crack + deep thud + crystalline shimmer
+    n = 1.0
+    crack = high(noise(.04), 2000) * env(int(SR * .04), .0003, .01)
+    thud = sweep(80, 35, .4, .6) * env(int(SR * .4), .002, .14) * 1.1
+    shimmer = chime([1760, 2349, 2794, 3520], .8, .3) * .25
+    return norm(mix(crack, thud, at(shimmer, .05, n)))
+
+def frost_shatter():  # ice breaking
+    n = .7; out = np.zeros(int(SR * n))
+    for i in range(18):
+        f = rng.uniform(1500, 5000); s0 = rng.uniform(0, .2)
+        out += at(chime([f], .15, rng.uniform(.02, .05)) * rng.uniform(.2, .6), s0, n)
+    crunch = band(noise(.25), 600, 3000) * env(int(SR * .25), .002, .07) * .6
+    return norm(mix(out, crunch))
+
+def ui_refuel():     # bright power-up arpeggio
+    n = .6; out = np.zeros(int(SR * n))
+    for i, f in enumerate([523, 659, 784, 1046]):
+        out += at(chime([f, f * 2], .3, .12) * .7, i * .06, n)
+    return norm(out, .75)
+
+SOUNDS = {"soul/feast": soul_feast, "soul/drain": soul_drain, "soul/end": soul_end,
+          "shadow/smoke": shadow_smoke, "shadow/backstab": shadow_backstab,
+          "blink/step": blink_step, "blink/shatter": blink_shatter, "shield/parry": shield_parry,
+          "storm/lunge": storm_lunge, "storm/zap": storm_zap, "frost/slam": frost_slam,
+          "frost/shatter": frost_shatter, "ui/refuel": ui_refuel,
+          "void/rumble": void_rumble, "void/launch": void_launch, "void/hum": void_hum, "void/collapse": void_collapse,
           "grappler/fire": fire, "grappler/stick": stick, "grappler/reel": reel,
           "grappler/release": release, "grappler/yank": yank}
 

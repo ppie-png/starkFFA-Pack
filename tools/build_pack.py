@@ -38,6 +38,12 @@ THEMES = {
     "wind": dict(bg_top=hx("#14303F", 242), bg_bottom=hx("#0B1322", 242),
                  frame_top=hx("#B8F6FF"), frame_bottom=hx("#3F86B4", 230),
                  accent="#A0F0FF"),
+    "soul":   dict(bg_top=hx("#103A33", 242), bg_bottom=hx("#07130F", 242), frame_top=hx("#C9FFF2"), frame_bottom=hx("#2E8C78", 230), accent="#7FFFD4"),
+    "shadow": dict(bg_top=hx("#1E1530", 242), bg_bottom=hx("#07050C", 242), frame_top=hx("#D9C6FF"), frame_bottom=hx("#4A3470", 230), accent="#B48CFF"),
+    "blink":  dict(bg_top=hx("#1D3442", 242), bg_bottom=hx("#0A141C", 242), frame_top=hx("#FFFFFF"), frame_bottom=hx("#7FD8FF", 230), accent="#E8F7FF"),
+    "shield": dict(bg_top=hx("#3A2E12", 242), bg_bottom=hx("#141005", 242), frame_top=hx("#FFF4C8"), frame_bottom=hx("#B07D1E", 230), accent="#FFE08A"),
+    "storm":  dict(bg_top=hx("#122C3A", 242), bg_bottom=hx("#060F16", 242), frame_top=hx("#FFF27A"), frame_bottom=hx("#2FA7C9", 230), accent="#7DF9FF"),
+    "frost":  dict(bg_top=hx("#163552", 242), bg_bottom=hx("#081420", 242), frame_top=hx("#E8F8FF"), frame_bottom=hx("#3A7BD5", 230), accent="#BFEFFF"),
     "void": dict(bg_top=hx("#24173A", 242), bg_bottom=hx("#0B0814", 242),
                  frame_top=hx("#E2CCFF"), frame_bottom=hx("#6B3FB5", 230),
                  accent="#C9A7FF"),
@@ -156,14 +162,19 @@ w(f"assets/{NS}/textures/font/hud/icon_hook.png", icon(ICONS["hook"], hx("#FFC59
 import sys; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import voidbow as _vb
 w(f"assets/{NS}/textures/font/hud/icon_void.png", _vb.icon())
+import arsenal as _ar
+for _n in ["soul", "shadow", "blink", "shield", "storm", "frost"]:
+    w(f"assets/{NS}/textures/font/hud/icon_{_n}.png", _ar.icon(_n))
 
 SPACES = {"": -1, "": -2, "": -4, "": -8,
           "": 1, "": 2, "": 4, "": 8}
+HUD_ICONS = ["wind", "hook", "void", "soul", "shadow", "blink", "shield", "storm", "frost"]   # \uE010 + index
 w(f"assets/{NS}/font/hud.json", {"providers": [
     {"type": "space", "advances": SPACES},
-    {"type": "bitmap", "file": f"{NS}:font/hud/segment.png", "ascent": 7, "height": 7, "chars": [""]},
-    {"type": "bitmap", "file": f"{NS}:font/hud/diamond.png", "ascent": 5, "height": 3, "chars": [""]},
-    {"type": "bitmap", "file": f"{NS}:font/hud/icon_wind.png", "ascent": 8, "height": 9, "chars": [""]},
+    {"type": "bitmap", "file": f"{NS}:font/hud/segment.png", "ascent": 7, "height": 7, "chars": ["\uE000"]},
+    {"type": "bitmap", "file": f"{NS}:font/hud/diamond.png", "ascent": 5, "height": 3, "chars": ["\uE002"]},
+] + [{"type": "bitmap", "file": f"{NS}:font/hud/icon_{n}.png", "ascent": 8, "height": 9, "chars": [chr(0xE010 + i)]}
+     for i, n in enumerate(HUD_ICONS)] + [
     {"type": "reference", "id": "minecraft:default"},
 ]})
 
@@ -275,6 +286,32 @@ for n in ("black_hole_disk", "black_hole_lens"):
     w(f"assets/{NS}/items/{n}.json", {"model": {"type": "minecraft:model", "model": f"{NS}:item/{n}"}})
 
 
+
+# ------------------------------------------------------------------ W4-W9 arsenal
+def simple_item(name):
+    w(f"assets/{NS}/items/{name}.json", {"model": {"type": "minecraft:model", "model": f"{NS}:item/{name}"}})
+for name, img in (("soul_blade", _ar.soul_blade()), ("soul_blade_lit", _ar.soul_blade(True)),
+                  ("shadow_dagger", _ar.shadow_dagger()), ("blink_blade", _ar.blink_blade())):
+    w(f"assets/{NS}/textures/item/{name}.png", img)
+    w(f"assets/{NS}/models/item/{name}.json", {"parent": "minecraft:item/handheld", "textures": {"layer0": f"{NS}:item/{name}"}})
+    simple_item(name)
+w(f"assets/{NS}/textures/item/atlas_arsenal.png", _ar.arsenal_atlas())
+for name, elements in (("storm_spear", _ar.spear()), ("frost_hammer", _ar.hammer())):
+    w(f"assets/{NS}/models/item/{name}.json", {"parent": "minecraft:item/handheld",
+        "textures": {"a": f"{NS}:item/atlas_arsenal", "particle": f"{NS}:item/atlas_arsenal"}, "elements": elements})
+    simple_item(name)
+w(f"assets/{NS}/models/item/ice_spike.json", {"textures": {"a": f"{NS}:item/atlas_arsenal", "particle": f"{NS}:item/atlas_arsenal"},
+    "elements": _ar.ice_spike()})
+simple_item("ice_spike")
+w(f"assets/{NS}/textures/item/repulsion_shield_front.png", _ar.shield_front_texture())
+for name, disp in (("repulsion_shield", _ar.SHIELD_DISPLAY), ("repulsion_shield_blocking", _ar.SHIELD_BLOCKING_DISPLAY)):
+    w(f"assets/{NS}/models/item/{name}.json", {"gui_light": "front",
+        "textures": {"a": f"{NS}:item/atlas_arsenal", "f": f"{NS}:item/repulsion_shield_front", "particle": f"{NS}:item/atlas_arsenal"},
+        "elements": _ar.shield(), "display": disp})
+w(f"assets/{NS}/items/repulsion_shield.json", {"model": {"type": "minecraft:condition", "property": "minecraft:using_item",
+    "on_false": {"type": "minecraft:model", "model": f"{NS}:item/repulsion_shield"},
+    "on_true": {"type": "minecraft:model", "model": f"{NS}:item/repulsion_shield_blocking"}}})
+
 # ------------------------------------------------------------------ sounds (synthesised, see tools/sounds.py)
 import sounds as _snd
 SOUND_DEFS = _snd.build(os.path.join(P, "assets"), NS)
@@ -284,7 +321,14 @@ w(f"assets/{NS}/lang/en_us.json", {
     "subtitles.starkffa.grappler.reel": "Grappler reels in", "subtitles.starkffa.grappler.release": "Plunger pops off",
     "subtitles.starkffa.grappler.yank": "Player yanked",
     "subtitles.starkffa.void.launch": "Black hole fired", "subtitles.starkffa.void.hum": "Black hole pulls",
-    "subtitles.starkffa.void.collapse": "Black hole collapses", "subtitles.starkffa.void.rumble": "Space rumbles"})
+    "subtitles.starkffa.void.collapse": "Black hole collapses", "subtitles.starkffa.void.rumble": "Space rumbles",
+    "subtitles.starkffa.soul.feast": "Soul Feast begins", "subtitles.starkffa.soul.drain": "Soul drained",
+    "subtitles.starkffa.soul.end": "Soul Feast fades", "subtitles.starkffa.shadow.smoke": "Smoke bursts",
+    "subtitles.starkffa.shadow.backstab": "Backstab", "subtitles.starkffa.blink.step": "Blink",
+    "subtitles.starkffa.blink.shatter": "Phase strike", "subtitles.starkffa.shield.parry": "Shockwave parry",
+    "subtitles.starkffa.storm.lunge": "Storm lunge", "subtitles.starkffa.storm.zap": "Zap",
+    "subtitles.starkffa.frost.slam": "Glacial slam", "subtitles.starkffa.frost.shatter": "Ice shatters",
+    "subtitles.starkffa.ui.refuel": "Refueled"})
 
 # ------------------------------------------------------------------ pack.mcmeta + pack.png
 w("pack.mcmeta", {"pack": {

@@ -19,3 +19,4 @@ After every rebuild: commit + push, then update the sha1 on the server.
 | Bow `starkffa:void_bow` (vanilla bow pulling states), `starkffa:black_hole` (animated, for item_display) | `assets/starkffa/items/` | |
 | Sounds `starkffa:grappler.*`, `starkffa:void.*` (synthesised by `tools/sounds.py`) | `assets/starkffa/sounds/` | |
 | Singularity: `starkffa:black_hole_disk` (flat ring, animated spin, emissive), `starkffa:black_hole_lens` (halo billboard) | `assets/starkffa/items/` | |
+| Arsenal W4–W9: `soul_blade` (+`_lit`), `shadow_dagger`, `blink_blade` (2D handheld), `storm_spear`, `frost_hammer` (3D, handheld), `repulsion_shield` (vanilla shield geometry + blocking pose), `ice_spike` (item_display) | `assets/starkffa/items/` | themes soul/shadow/blink/shield/storm/frost, icons \uE013–\uE018 |

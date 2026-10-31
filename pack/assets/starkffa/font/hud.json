@@ -41,6 +41,78 @@
       ]
     },
     {
+      "type": "bitmap",
+      "file": "starkffa:font/hud/icon_hook.png",
+      "ascent": 8,
+      "height": 9,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "starkffa:font/hud/icon_void.png",
+      "ascent": 8,
+      "height": 9,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "starkffa:font/hud/icon_soul.png",
+      "ascent": 8,
+      "height": 9,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "starkffa:font/hud/icon_shadow.png",
+      "ascent": 8,
+      "height": 9,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "starkffa:font/hud/icon_blink.png",
+      "ascent": 8,
+      "height": 9,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "starkffa:font/hud/icon_shield.png",
+      "ascent": 8,
+      "height": 9,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "starkffa:font/hud/icon_storm.png",
+      "ascent": 8,
+      "height": 9,
+      "chars": [
+        ""
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "starkffa:font/hud/icon_frost.png",
+      "ascent": 8,
+      "height": 9,
+      "chars": [
+        ""
+      ]
+    },
+    {
       "type": "reference",
       "id": "minecraft:default"
     }
