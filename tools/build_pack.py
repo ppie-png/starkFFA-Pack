@@ -296,7 +296,7 @@ w(f"assets/{NS}/lang/en_us.json", {
     "subtitles.starkffa.void.collapse": "Black hole collapses", "subtitles.starkffa.void.rumble": "Space rumbles",
     "subtitles.starkffa.soul.feast": "Soul Feast begins", "subtitles.starkffa.soul.drain": "Soul drained",
     "subtitles.starkffa.soul.end": "Soul Feast fades", "subtitles.starkffa.shadow.smoke": "Smoke bursts",
-    "subtitles.starkffa.shadow.backstab": "Backstab", "subtitles.starkffa.blink.step": "Blink",
+    "subtitles.starkffa.shadow.backstab": "Backstab", "subtitles.starkffa.shadow.swap": "Shadow swap", "subtitles.starkffa.blink.step": "Blink",
     "subtitles.starkffa.blink.shatter": "Phase strike", "subtitles.starkffa.shield.parry": "Shockwave parry",
     "subtitles.starkffa.storm.lunge": "Storm lunge", "subtitles.starkffa.storm.zap": "Zap",
     "subtitles.starkffa.frost.slam": "Glacial slam", "subtitles.starkffa.frost.shatter": "Ice shatters",

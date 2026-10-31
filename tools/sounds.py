@@ -192,7 +192,17 @@ def ui_refuel():     # bright power-up arpeggio
         out += at(chime([f, f * 2], .3, .12) * .7, i * .06, n)
     return norm(out, .75)
 
-SOUNDS = {"soul/feast": soul_feast, "soul/drain": soul_drain, "soul/end": soul_end,
+
+def shadow_swap():    # reverse-whoosh suck -> deep thud -> whisper tail (1.2 s, layered)
+    n = 1.2; x = t(n)
+    suck = band(noise(.35), 400, 5000) * np.linspace(0, 1, int(SR * .35)) ** 3 * .9
+    thud = sweep(70, 32, .45, .6) * env(int(SR * .45), .001, .16) * 1.2
+    crack = high(noise(.03), 2000) * env(int(SR * .03), .0004, .008) * .7
+    whisper = band(noise(.8), 1500, 6000) * (0.5 + 0.5 * np.sin(2 * np.pi * 9 * t(.8))) * env(int(SR * .8), .05, .3) * .35
+    shimmer = chime([392, 466, 587], .7, .3) * .25
+    return norm(mix(at(suck, 0, n), at(thud, .33, n), at(crack, .33, n), at(shimmer, .34, n), at(whisper, .4, n)))
+
+SOUNDS = {"shadow/swap": shadow_swap, "soul/feast": soul_feast, "soul/drain": soul_drain, "soul/end": soul_end,
           "shadow/smoke": shadow_smoke, "shadow/backstab": shadow_backstab,
           "blink/step": blink_step, "blink/shatter": blink_shatter, "shield/parry": shield_parry,
           "storm/lunge": storm_lunge, "storm/zap": storm_zap, "frost/slam": frost_slam,

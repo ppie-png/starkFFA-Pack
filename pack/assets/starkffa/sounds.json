@@ -1,4 +1,12 @@
 {
+  "shadow.swap": {
+    "subtitle": "subtitles.starkffa.shadow.swap",
+    "sounds": [
+      {
+        "name": "starkffa:shadow/swap"
+      }
+    ]
+  },
   "soul.feast": {
     "subtitle": "subtitles.starkffa.soul.feast",
     "sounds": [
