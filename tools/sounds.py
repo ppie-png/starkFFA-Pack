@@ -90,7 +90,15 @@ def void_collapse(): # implosion: reverse suck then boom
     crack = high(noise(.03), 1500) * env(int(SR * .03), .0005, .008) * .6
     return norm(mix(at(suck, 0, n), at(boom * 1.2, .24, n), at(crack, .24, n)))
 
-SOUNDS = {"void/launch": void_launch, "void/hum": void_hum, "void/collapse": void_collapse,
+def void_rumble():   # 1.5 s sub rumble + rising airy whoosh, layered with void.hum
+    n = 1.5; x = t(n)
+    sub = np.sin(2 * np.pi * np.cumsum(32 + 6 * np.sin(2 * np.pi * 1.3 * x)) / SR)
+    grit = low(noise(n), 160) * 1.2
+    rise = band(noise(n), 300, 2400) * (x / n) ** 2.2 * .5
+    e = np.clip(x / .25, 0, 1) * np.clip((n - x) / .1, 0, 1)
+    return norm((sub * .9 + grit + rise) * e, .85)
+
+SOUNDS = {"void/rumble": void_rumble, "void/launch": void_launch, "void/hum": void_hum, "void/collapse": void_collapse,
           "grappler/fire": fire, "grappler/stick": stick, "grappler/reel": reel,
           "grappler/release": release, "grappler/yank": yank}
 

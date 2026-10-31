@@ -1,4 +1,12 @@
 {
+  "void.rumble": {
+    "subtitle": "subtitles.starkffa.void.rumble",
+    "sounds": [
+      {
+        "name": "starkffa:void/rumble"
+      }
+    ]
+  },
   "void.launch": {
     "subtitle": "subtitles.starkffa.void.launch",
     "sounds": [

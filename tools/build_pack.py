@@ -257,6 +257,23 @@ w(f"assets/{NS}/textures/item/black_hole.png", _vb.black_hole())
 w(f"assets/{NS}/textures/item/black_hole.png.mcmeta", {"animation": {"frametime": 2, "interpolate": True}})
 w(f"assets/{NS}/models/item/black_hole.json", {"parent": "minecraft:item/generated", "textures": {"layer0": f"{NS}:item/black_hole"}})
 w(f"assets/{NS}/items/black_hole.json", {"model": {"type": "minecraft:model", "model": f"{NS}:item/black_hole"}})
+# Singularity upgrade: accretion disk (flat, spins via animated texture) + lens glow billboard
+w(f"assets/{NS}/textures/item/black_hole_disk.png", _vb.accretion_disk())
+w(f"assets/{NS}/textures/item/black_hole_disk.png.mcmeta", {"animation": {"frametime": 2, "interpolate": True}})
+w(f"assets/{NS}/models/item/black_hole_disk.json", {
+    "textures": {"t": f"{NS}:item/black_hole_disk", "particle": f"{NS}:item/black_hole_disk"},
+    "elements": [{"from": [0, 8, 0], "to": [16, 8.01, 16], "shade": False, "light_emission": 15,
+                  "faces": {"up": {"uv": [0, 0, 16, 16], "texture": "#t"},
+                            "down": {"uv": [0, 16, 16, 0], "texture": "#t"}}}]})
+w(f"assets/{NS}/textures/item/black_hole_lens.png", _vb.lens_glow())
+w(f"assets/{NS}/models/item/black_hole_lens.json", {
+    "textures": {"t": f"{NS}:item/black_hole_lens", "particle": f"{NS}:item/black_hole_lens"},
+    "elements": [{"from": [0, 0, 8], "to": [16, 16, 8.01], "shade": False, "light_emission": 15,
+                  "faces": {"south": {"uv": [0, 0, 16, 16], "texture": "#t"},
+                            "north": {"uv": [16, 0, 0, 16], "texture": "#t"}}}]})
+for n in ("black_hole_disk", "black_hole_lens"):
+    w(f"assets/{NS}/items/{n}.json", {"model": {"type": "minecraft:model", "model": f"{NS}:item/{n}"}})
+
 
 # ------------------------------------------------------------------ sounds (synthesised, see tools/sounds.py)
 import sounds as _snd
@@ -267,7 +284,7 @@ w(f"assets/{NS}/lang/en_us.json", {
     "subtitles.starkffa.grappler.reel": "Grappler reels in", "subtitles.starkffa.grappler.release": "Plunger pops off",
     "subtitles.starkffa.grappler.yank": "Player yanked",
     "subtitles.starkffa.void.launch": "Black hole fired", "subtitles.starkffa.void.hum": "Black hole pulls",
-    "subtitles.starkffa.void.collapse": "Black hole collapses"})
+    "subtitles.starkffa.void.collapse": "Black hole collapses", "subtitles.starkffa.void.rumble": "Space rumbles"})
 
 # ------------------------------------------------------------------ pack.mcmeta + pack.png
 w("pack.mcmeta", {"pack": {

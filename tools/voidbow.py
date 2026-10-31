@@ -80,3 +80,39 @@ def icon():
                 d = math.hypot(x - 4, y - 4)
                 px[x, y] = hx("#F2E6FF") if d < 1.5 else (hx("#C9A7FF") if d < 3 else hx("#7A4FC9"))
     return im
+
+def accretion_disk(size=64, frames=12):
+    """Flat ring seen from above, hot inner edge, spiral streaks; animated rotation (frames)."""
+    sheet = Image.new("RGBA", (size, size * frames), (0, 0, 0, 0)); px = sheet.load()
+    c = (size - 1) / 2; r_in, r_out = size * 0.18, size * 0.49
+    for f in range(frames):
+        rot = 2 * math.pi * f / frames
+        for y in range(size):
+            for x in range(size):
+                dx, dy = x - c, y - c; r = math.hypot(dx, dy)
+                if r < r_in or r > r_out: continue
+                a = math.atan2(dy, dx); q = (r - r_in) / (r_out - r_in)       # 0 inner .. 1 outer
+                streak = 0.5 + 0.5 * math.cos(3 * (a - rot) + q * 7.0)        # 3 spiral arms
+                heat = (1 - q) ** 1.6
+                R = 90 + 165 * heat + 30 * streak
+                G = 40 + 170 * heat ** 1.5 + 20 * streak
+                B = 160 + 95 * heat
+                alpha = (1 - q) ** 0.8 * (0.55 + 0.45 * streak) * min(1, (r - r_in) / 2.0)
+                if alpha > 0.06:
+                    px[x, y + f * size] = (min(255, int(R)), min(255, int(G)), min(255, int(B)), int(255 * min(1, alpha)))
+    return sheet
+
+def lens_glow(size=64):
+    """Soft violet halo with a dark centre (gravitational lens look), semi-transparent."""
+    im = Image.new("RGBA", (size, size), (0, 0, 0, 0)); px = im.load(); c = (size - 1) / 2
+    for y in range(size):
+        for x in range(size):
+            r = math.hypot(x - c, y - c) / c
+            if r > 1: continue
+            ring = math.exp(-((r - 0.42) / 0.16) ** 2)      # bright photon ring
+            haze = (1 - r) ** 2 * 0.35
+            a = min(1, ring * 0.85 + haze)
+            if r < 0.30: a *= (r / 0.30) ** 3                # dark middle
+            if a > 0.03:
+                px[x, y] = (int(170 + 70 * ring), int(120 + 90 * ring), 255, int(255 * a))
+    return im

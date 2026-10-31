@@ -18,3 +18,4 @@ After every rebuild: commit + push, then update the sha1 on the server.
 | Item models: `starkffa:plunger_grappler` (+ `_empty`, `plunger_head`) | `assets/starkffa/items/`, `models/item/` | barrel points north (-z) |
 | Bow `starkffa:void_bow` (vanilla bow pulling states), `starkffa:black_hole` (animated, for item_display) | `assets/starkffa/items/` | |
 | Sounds `starkffa:grappler.*`, `starkffa:void.*` (synthesised by `tools/sounds.py`) | `assets/starkffa/sounds/` | |
+| Singularity: `starkffa:black_hole_disk` (flat ring, animated spin, emissive), `starkffa:black_hole_lens` (halo billboard) | `assets/starkffa/items/` | |
