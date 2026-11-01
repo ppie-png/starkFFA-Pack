@@ -17,7 +17,7 @@ def gui_bg(accent, rows=6):
         im.putpixel((x-1,y-1),accent+(140,))
     for r in range(rows):
         for c in range(9): slot(8+c*18,18+r*18)
-    py=18+rows*18+14
+    py=18+rows*18+13
     # divider
     for x in range(8,W-8): im.putpixel((x,py-6),lerp(SL3,accent,0.25)+(255,))
     for r in range(3):
@@ -35,20 +35,25 @@ def banner(accent, w=128, h=24):
     return im
 def build(pack):
     fdir=os.path.join(pack,"assets/starkffa/textures/font/gui"); os.makedirs(fdir,exist_ok=True)
-    GUIS=[("kits",CY,6),("enderchest",CY,6),("shop",AM,6),("gemshop",CY,6),("sell",AM,6),("menu",CY,6),("kits3",CY,3),("menu3",CY,3)]
     prov=[]; table={}
-    for i,(n,acc,rows) in enumerate(GUIS):
-        im=gui_bg(acc,rows); im.save(os.path.join(fdir,n+".png")); ch=chr(0xE200+i); table[n]=hex(0xE200+i)
-        prov.append({"type":"bitmap","file":f"starkffa:font/gui/{n}.png","ascent":13,"height":im.height,"chars":[ch]})
+    # chest backgrounds: rows 3..6 x accent (cyan, amber) -> U+E200 + (rows-3)*2 + amber
+    for rows in (3,4,5,6):
+        for ai,(an,acc) in enumerate((("cyan",CY),("amber",AM))):
+            im=gui_bg(acc,rows); n=f"chest{rows}_{an}"; im.save(os.path.join(fdir,n+".png"))
+            cp=0xE200+(rows-3)*2+ai; table[n]=hex(cp)
+            prov.append({"type":"bitmap","file":f"starkffa:font/gui/{n}.png","ascent":13,"height":im.height,"chars":[chr(cp)]})
     BAN=[("event",AM),("kill",CY),("alert",RD),("streak",AM)]
     for i,(n,acc) in enumerate(BAN):
         im=banner(acc); im.save(os.path.join(fdir,"banner_"+n+".png")); ch=chr(0xE220+i); table["banner_"+n]=hex(0xE220+i)
         prov.append({"type":"bitmap","file":f"starkffa:font/gui/banner_{n}.png","ascent":10,"height":12,"chars":[ch]})
     prov.append({"type":"space","advances":{"":-8,"":-169,"":-1,"":-2,"":-4,"":-16,"":-32,"":-64,"":-128,"":-49}})
     json.dump({"providers":prov},open(os.path.join(pack,"assets/starkffa/font/gui.json"),"w",encoding="utf-8"),indent=2,ensure_ascii=True)
+    for lang in ("en_us","en_gb","de_de","de_at","de_ch"):
+        ld=os.path.join(pack,"assets/minecraft/lang"); os.makedirs(ld,exist_ok=True)
+        json.dump({"container.inventory":""},open(os.path.join(ld,lang+".json"),"w",encoding="utf-8"))
     # preview
     pv=Image.new("RGBA",(176*4+50,222+60),(40,40,48,255)); x=10
-    for n in ("kits","shop","enderchest","gemshop"):
+    for n in ("chest6_cyan","chest6_amber","chest3_cyan","chest4_amber"):
         pv.alpha_composite(Image.open(os.path.join(fdir,n+".png")),(x,10)); x+=186
     for i,(n,_) in enumerate(BAN): pv.alpha_composite(Image.open(os.path.join(fdir,"banner_"+n+".png")).resize((256,48),Image.NEAREST),(10+i*190,232)) if i<3 else None
     pv.save(os.path.join(os.path.dirname(pack),"gui_preview.png"))

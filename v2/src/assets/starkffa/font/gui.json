@@ -2,72 +2,72 @@
   "providers": [
     {
       "type": "bitmap",
-      "file": "starkffa:font/gui/kits.png",
+      "file": "starkffa:font/gui/chest3_cyan.png",
       "ascent": 13,
-      "height": 222,
+      "height": 168,
       "chars": [
         "\ue200"
       ]
     },
     {
       "type": "bitmap",
-      "file": "starkffa:font/gui/enderchest.png",
+      "file": "starkffa:font/gui/chest3_amber.png",
       "ascent": 13,
-      "height": 222,
+      "height": 168,
       "chars": [
         "\ue201"
       ]
     },
     {
       "type": "bitmap",
-      "file": "starkffa:font/gui/shop.png",
+      "file": "starkffa:font/gui/chest4_cyan.png",
       "ascent": 13,
-      "height": 222,
+      "height": 186,
       "chars": [
         "\ue202"
       ]
     },
     {
       "type": "bitmap",
-      "file": "starkffa:font/gui/gemshop.png",
+      "file": "starkffa:font/gui/chest4_amber.png",
       "ascent": 13,
-      "height": 222,
+      "height": 186,
       "chars": [
         "\ue203"
       ]
     },
     {
       "type": "bitmap",
-      "file": "starkffa:font/gui/sell.png",
+      "file": "starkffa:font/gui/chest5_cyan.png",
       "ascent": 13,
-      "height": 222,
+      "height": 204,
       "chars": [
         "\ue204"
       ]
     },
     {
       "type": "bitmap",
-      "file": "starkffa:font/gui/menu.png",
+      "file": "starkffa:font/gui/chest5_amber.png",
       "ascent": 13,
-      "height": 222,
+      "height": 204,
       "chars": [
         "\ue205"
       ]
     },
     {
       "type": "bitmap",
-      "file": "starkffa:font/gui/kits3.png",
+      "file": "starkffa:font/gui/chest6_cyan.png",
       "ascent": 13,
-      "height": 168,
+      "height": 222,
       "chars": [
         "\ue206"
       ]
     },
     {
       "type": "bitmap",
-      "file": "starkffa:font/gui/menu3.png",
+      "file": "starkffa:font/gui/chest6_amber.png",
       "ascent": 13,
-      "height": 168,
+      "height": 222,
       "chars": [
         "\ue207"
       ]
