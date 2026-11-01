@@ -1,4 +1,5 @@
 """FFA resource pack: 8x8 pixel icons in font starkffa:icons -> pack/ + dist/ffa-pack.zip + dist/sha1.txt"""
+import sys as _s; _s.path.insert(0, os.path.dirname(os.path.abspath(__file__))) if False else None
 import json, os, shutil, zipfile, hashlib, sys
 from PIL import Image
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -43,7 +44,7 @@ def main():
     # ---- UI font: dark scoreboard panel rows (one 120x9 cell per sidebar line) + negative/positive spaces
     PANEL_W, ROWS = 120, 11
     def mix(a, b, t): return tuple(int(a[i] + (b[i] - a[i]) * t) for i in range(3))
-    STOPS = [(0, 229, 255), (124, 77, 255), (255, 45, 149)]          # cyan -> violet -> pink accent bar
+    STOPS = [(63, 224, 255), (40, 120, 150), (255, 181, 71)]          # cyan -> violet -> pink accent bar
     def stripe(t):
         return mix(STOPS[0], STOPS[1], t * 2) if t < 0.5 else mix(STOPS[1], STOPS[2], (t - 0.5) * 2)
     rows = Image.new("RGBA", (PANEL_W, 9 * ROWS), (0, 0, 0, 0))
@@ -51,8 +52,8 @@ def main():
         t = r / (ROWS - 1)
         for y in range(9):
             for x in range(PANEL_W):
-                a = 150                                              # panel darkness (vanilla bar sits underneath)
-                col = (10, 8, 28, a)
+                a = 205                                              # panel darkness (vanilla bar sits underneath)
+                col = (16, 20, 28, a)
                 if x < 2: col = stripe(t) + (255,)                   # accent bar
                 elif x == 2: col = (10, 8, 28, 200)                  # soft edge next to the bar
                 # rounded corners on the first / last row
@@ -93,6 +94,7 @@ def main():
         for kind in ("background", "frame"):
             json.dump({"gui": {"scaling": {"type": "nine_slice", "width": TW, "height": TH, "border": 4}}},
                       open(os.path.join(tdir, f"{wid}_{kind}.png.mcmeta"), "w"), indent=2)
+    import gui_part; print("gui", gui_part.build(pack))
     json.dump({"pack": {"description": [{"text": "◆ StarkFFA", "color": "#A0C4FF", "bold": True}, {"text": "\nIcons, UI & weapon tooltips", "color": "#BDB2FF"}],
                         "min_format": [97, 0], "max_format": [97, 1]}},
               open(os.path.join(pack, "pack.mcmeta"), "w", encoding="utf-8"), indent=2, ensure_ascii=False)

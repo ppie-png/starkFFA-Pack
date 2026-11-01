@@ -1,0 +1,127 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "file": "starkffa:font/gui/kits.png",
+      "ascent": 13,
+      "height": 222,
+      "chars": [
+        "\ue200"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "starkffa:font/gui/enderchest.png",
+      "ascent": 13,
+      "height": 222,
+      "chars": [
+        "\ue201"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "starkffa:font/gui/shop.png",
+      "ascent": 13,
+      "height": 222,
+      "chars": [
+        "\ue202"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "starkffa:font/gui/gemshop.png",
+      "ascent": 13,
+      "height": 222,
+      "chars": [
+        "\ue203"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "starkffa:font/gui/sell.png",
+      "ascent": 13,
+      "height": 222,
+      "chars": [
+        "\ue204"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "starkffa:font/gui/menu.png",
+      "ascent": 13,
+      "height": 222,
+      "chars": [
+        "\ue205"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "starkffa:font/gui/kits3.png",
+      "ascent": 13,
+      "height": 168,
+      "chars": [
+        "\ue206"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "starkffa:font/gui/menu3.png",
+      "ascent": 13,
+      "height": 168,
+      "chars": [
+        "\ue207"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "starkffa:font/gui/banner_event.png",
+      "ascent": 10,
+      "height": 12,
+      "chars": [
+        "\ue220"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "starkffa:font/gui/banner_kill.png",
+      "ascent": 10,
+      "height": 12,
+      "chars": [
+        "\ue221"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "starkffa:font/gui/banner_alert.png",
+      "ascent": 10,
+      "height": 12,
+      "chars": [
+        "\ue222"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "starkffa:font/gui/banner_streak.png",
+      "ascent": 10,
+      "height": 12,
+      "chars": [
+        "\ue223"
+      ]
+    },
+    {
+      "type": "space",
+      "advances": {
+        "\uf810": -8,
+        "\uf811": -169,
+        "\uf812": -1,
+        "\uf813": -2,
+        "\uf814": -4,
+        "\uf815": -16,
+        "\uf816": -32,
+        "\uf817": -64,
+        "\uf818": -128,
+        "\uf819": -49
+      }
+    }
+  ]
+}
