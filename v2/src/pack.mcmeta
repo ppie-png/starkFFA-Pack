@@ -1,0 +1,23 @@
+{
+  "pack": {
+    "description": [
+      {
+        "text": "◆ StarkFFA",
+        "color": "#A0C4FF",
+        "bold": true
+      },
+      {
+        "text": "\nPixel icons & UI",
+        "color": "#BDB2FF"
+      }
+    ],
+    "min_format": [
+      97,
+      0
+    ],
+    "max_format": [
+      97,
+      1
+    ]
+  }
+}

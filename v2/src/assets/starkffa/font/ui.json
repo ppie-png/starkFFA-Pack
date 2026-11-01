@@ -1,0 +1,31 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "file": "starkffa:font/panel_rows.png",
+      "ascent": 7,
+      "height": 9,
+      "chars": [
+        "\ue100",
+        "\ue101",
+        "\ue102",
+        "\ue103",
+        "\ue104",
+        "\ue105",
+        "\ue106",
+        "\ue107",
+        "\ue108",
+        "\ue109",
+        "\ue10a"
+      ]
+    },
+    {
+      "type": "space",
+      "advances": {
+        "\uf800": -121,
+        "\uf801": 4,
+        "\uf802": 8
+      }
+    }
+  ]
+}
