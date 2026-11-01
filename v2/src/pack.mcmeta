@@ -2,13 +2,13 @@
   "pack": {
     "description": [
       {
-        "text": "◆ StarkFFA",
-        "color": "#A0C4FF",
+        "text": "◆ STARK FFA",
+        "color": "#3FE0FF",
         "bold": true
       },
       {
-        "text": "\nIcons, UI & weapon tooltips",
-        "color": "#BDB2FF"
+        "text": "\nMenus, icons, badges & weapon tooltips",
+        "color": "#8A96A8"
       }
     ],
     "min_format": [

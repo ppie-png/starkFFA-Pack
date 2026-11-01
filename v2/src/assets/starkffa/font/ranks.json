@@ -1,0 +1,40 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "file": "starkffa:font/ranks/owner.png",
+      "ascent": 7,
+      "height": 7,
+      "chars": [
+        "\ue300"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "starkffa:font/ranks/admin.png",
+      "ascent": 7,
+      "height": 7,
+      "chars": [
+        "\ue301"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "starkffa:font/ranks/mod.png",
+      "ascent": 7,
+      "height": 7,
+      "chars": [
+        "\ue302"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "starkffa:font/ranks/media.png",
+      "ascent": 7,
+      "height": 7,
+      "chars": [
+        "\ue303"
+      ]
+    }
+  ]
+}

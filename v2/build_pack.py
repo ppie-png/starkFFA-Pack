@@ -18,8 +18,9 @@ ICONS = {
  "gem":    ["..kkkk..", ".kPPpvk.", "kPPpppvk", "kkkkkkkk", ".kppppk.", "..kpvk..", "...kk...", "........"],
  "crown":  ["........", "k..kk..k", "kYkyykYk", "kyyyyyyk", "kyrypyrk", "kyyyyyyk", "kkkkkkkk", "........"],
  "star":   ["...kk...", "..kLlk..", "kkkLlkkk", "kLLLllLk", ".kLlllk.", ".kllllk.", "kllkkllk", "kkk..kkk"],
+ "pulse":  ["........", "..c.....", "..cc....", ".cCc..c.", "cC.cCcCc", "C..cc.C.", "...Cc...", "....C..."],
 }
-ORDER = ["sword", "skull", "flame", "heart", "signal", "online", "coin", "gem", "crown", "star"]
+ORDER = ["sword", "skull", "flame", "heart", "signal", "online", "coin", "gem", "crown", "star", "pulse"]
 CHARS = [chr(0xE000 + i) for i in range(len(ORDER))]
 
 def render(name):
@@ -67,12 +68,13 @@ def main():
         open(os.path.join(pack, "assets/starkffa/font/ui.json"), "w", encoding="utf-8"), indent=2, ensure_ascii=True)
 
     # ---- weapon tooltips: soft vertical gradient background + gradient frame per weapon (item component tooltip_style = starkffa:<id>)
-    TIPS = {"wind_mace": ("A0C4FF", "FFC6FF"), "plunger_grappler": ("FFE08A", "FFC6FF"), "blink_blade": ("C77DFF", "A0C4FF"),
-            "soul_blade": ("FF6B6B", "C77DFF"), "shadow_dagger": ("6C757D", "C77DFF"), "black_hole_bow": ("7B2CBF", "A0C4FF"),
-            "repulsion_shield": ("A0C4FF", "FFE08A"), "lightning_dash_spear": ("FFE08A", "A0C4FF"), "glacial_slam": ("A0E7FF", "A0C4FF")}
+    T3, T4, T5 = ("3FE0FF", "1A8FB0"), ("8BF0FF", "3FE0FF"), ("FFD58A", "FFB547")     # STARK DARK tier accents
+    TIPS = {"wind_mace": T3, "plunger_grappler": T3, "repulsion_shield": T3,
+            "blink_blade": T4, "soul_blade": T4, "shadow_dagger": T4, "lightning_dash_spear": T4, "glacial_slam": T4,
+            "black_hole_bow": T5}
     tdir = os.path.join(pack, "assets/starkffa/textures/gui/sprites/tooltip"); os.makedirs(tdir)
     hexrgb = lambda h: tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
-    BASE = (16, 12, 30)
+    BASE = (13, 16, 22)
     TW, TH = 16, 64
     for wid, (c1, c2) in TIPS.items():
         a, b = hexrgb(c1), hexrgb(c2)
@@ -80,10 +82,10 @@ def main():
         for y in range(TH):
             t = y / (TH - 1)
             tint = tuple(int(a[i] + (b[i] - a[i]) * t) for i in range(3))
-            col = tuple(int(BASE[i] + (tint[i] - BASE[i]) * 0.30) for i in range(3)) + (240,)
+            col = tuple(int(BASE[i] + (tint[i] - BASE[i]) * 0.10) for i in range(3)) + (244,)
             for x in range(TW):
                 bg.putpixel((x, y), col)
-            line = tuple(int(tint[i] * 0.55 + 255 * 0.45) for i in range(3)) + (255,)
+            line = tuple(int(tint[i] * 0.85 + 255 * 0.15) for i in range(3)) + (255,)
             for x in range(TW):
                 edge = (x == 3 or x == TW - 4) or (y == 3 or y == TH - 4)
                 inside = 3 <= x <= TW - 4 and 3 <= y <= TH - 4
@@ -95,7 +97,8 @@ def main():
             json.dump({"gui": {"scaling": {"type": "nine_slice", "width": TW, "height": TH, "border": 4}}},
                       open(os.path.join(tdir, f"{wid}_{kind}.png.mcmeta"), "w"), indent=2)
     import gui_part; print("gui", gui_part.build(pack))
-    json.dump({"pack": {"description": [{"text": "◆ StarkFFA", "color": "#A0C4FF", "bold": True}, {"text": "\nIcons, UI & weapon tooltips", "color": "#BDB2FF"}],
+    import rank_part; print("ranks", rank_part.build(pack))
+    json.dump({"pack": {"description": [{"text": "◆ STARK FFA", "color": "#3FE0FF", "bold": True}, {"text": "\nMenus, icons, badges & weapon tooltips", "color": "#8A96A8"}],
                         "min_format": [97, 0], "max_format": [97, 1]}},
               open(os.path.join(pack, "pack.mcmeta"), "w", encoding="utf-8"), indent=2, ensure_ascii=False)
     # pack.png: gradient tile with the sword
@@ -103,7 +106,10 @@ def main():
     for y in range(64):
         for x in range(64):
             t = (x + y) / 126
-            png.putpixel((x, y), (int(160 + 95 * t), int(196 - 0 * t - 0 * t + 0), 255, 255) if False else (int(160 + 29 * t), int(196 - 18 * t), int(255), 255))
+            edge = min(x, y, 63 - x, 63 - y)
+            base = (int(13 + 13 * t), int(16 + 18 * t), int(22 + 26 * t))
+            glow = max(0.0, 1 - edge / 6.0) * 0.55
+            png.putpixel((x, y), tuple(int(base[i] + ((63, 224, 255)[i] - base[i]) * glow) for i in range(3)) + (255,))
     big = render("sword").resize((48, 48), Image.NEAREST); png.alpha_composite(big, (8, 8)); png.save(os.path.join(pack, "pack.png"))
     os.makedirs(os.path.join(ROOT, "dist"), exist_ok=True)
     zp = os.path.join(ROOT, "dist", "ffa-pack.zip")

@@ -74,6 +74,15 @@
     },
     {
       "type": "bitmap",
+      "file": "starkffa:font/gui/kitb6.png",
+      "ascent": 13,
+      "height": 222,
+      "chars": [
+        "\ue208"
+      ]
+    },
+    {
+      "type": "bitmap",
       "file": "starkffa:font/gui/banner_event.png",
       "ascent": 10,
       "height": 12,
