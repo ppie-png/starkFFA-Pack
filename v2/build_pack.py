@@ -64,7 +64,36 @@ def main():
         {"type": "bitmap", "file": "starkffa:font/panel_rows.png", "ascent": 7, "height": 9, "chars": [chr(0xE100 + i) for i in range(ROWS)]},
         {"type": "space", "advances": {"\uF800": -(PANEL_W + 1), "\uF801": 4, "\uF802": 8}}]},
         open(os.path.join(pack, "assets/starkffa/font/ui.json"), "w", encoding="utf-8"), indent=2, ensure_ascii=True)
-    json.dump({"pack": {"description": [{"text": "◆ StarkFFA", "color": "#A0C4FF", "bold": True}, {"text": "\nPixel icons & UI", "color": "#BDB2FF"}],
+
+    # ---- weapon tooltips: soft vertical gradient background + gradient frame per weapon (item component tooltip_style = starkffa:<id>)
+    TIPS = {"wind_mace": ("A0C4FF", "FFC6FF"), "plunger_grappler": ("FFE08A", "FFC6FF"), "blink_blade": ("C77DFF", "A0C4FF"),
+            "soul_blade": ("FF6B6B", "C77DFF"), "shadow_dagger": ("6C757D", "C77DFF"), "black_hole_bow": ("7B2CBF", "A0C4FF"),
+            "repulsion_shield": ("A0C4FF", "FFE08A"), "lightning_dash_spear": ("FFE08A", "A0C4FF"), "glacial_slam": ("A0E7FF", "A0C4FF")}
+    tdir = os.path.join(pack, "assets/starkffa/textures/gui/sprites/tooltip"); os.makedirs(tdir)
+    hexrgb = lambda h: tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
+    BASE = (16, 12, 30)
+    TW, TH = 16, 64
+    for wid, (c1, c2) in TIPS.items():
+        a, b = hexrgb(c1), hexrgb(c2)
+        bg = Image.new("RGBA", (TW, TH)); fr = Image.new("RGBA", (TW, TH))
+        for y in range(TH):
+            t = y / (TH - 1)
+            tint = tuple(int(a[i] + (b[i] - a[i]) * t) for i in range(3))
+            col = tuple(int(BASE[i] + (tint[i] - BASE[i]) * 0.30) for i in range(3)) + (240,)
+            for x in range(TW):
+                bg.putpixel((x, y), col)
+            line = tuple(int(tint[i] * 0.55 + 255 * 0.45) for i in range(3)) + (255,)
+            for x in range(TW):
+                edge = (x == 3 or x == TW - 4) or (y == 3 or y == TH - 4)
+                inside = 3 <= x <= TW - 4 and 3 <= y <= TH - 4
+                corner = (x, y) in [(3, 3), (TW - 4, 3), (3, TH - 4), (TW - 4, TH - 4)]
+                if edge and inside and not corner:
+                    fr.putpixel((x, y), line)
+        bg.save(os.path.join(tdir, wid + "_background.png")); fr.save(os.path.join(tdir, wid + "_frame.png"))
+        for kind in ("background", "frame"):
+            json.dump({"gui": {"scaling": {"type": "nine_slice", "width": TW, "height": TH, "border": 4}}},
+                      open(os.path.join(tdir, f"{wid}_{kind}.png.mcmeta"), "w"), indent=2)
+    json.dump({"pack": {"description": [{"text": "◆ StarkFFA", "color": "#A0C4FF", "bold": True}, {"text": "\nIcons, UI & weapon tooltips", "color": "#BDB2FF"}],
                         "min_format": [97, 0], "max_format": [97, 1]}},
               open(os.path.join(pack, "pack.mcmeta"), "w", encoding="utf-8"), indent=2, ensure_ascii=False)
     # pack.png: gradient tile with the sword
