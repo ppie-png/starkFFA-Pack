@@ -1,0 +1,41 @@
+{
+ "providers": [
+  {
+   "type": "space",
+   "advances": {
+    " ": 3,
+    "\ue020": -2,
+    "\ue021": -1,
+    "\ue022": -1.5
+   }
+  },
+  {
+   "type": "bitmap",
+   "file": "starkffa:font/dmg/dmg_big.png",
+   "height": 12,
+   "ascent": 10,
+   "chars": [
+    "0123456789"
+   ]
+  },
+  {
+   "type": "bitmap",
+   "file": "starkffa:font/dmg/dmg_small.png",
+   "height": 8,
+   "ascent": 6,
+   "chars": [
+    "\ue000\ue001\ue002\ue003\ue004\ue005\ue006\ue007\ue008\ue009\ue00a"
+   ]
+  },
+  {
+   "type": "bitmap",
+   "file": "starkffa:font/dmg/dmg_letters.png",
+   "height": 10,
+   "ascent": 8,
+   "chars": [
+    "ABCDEFGHIJKLM",
+    "NOPRSTUVWXYZ\u0000"
+   ]
+  }
+ ]
+}
