@@ -1,14 +1,74 @@
 {
   "pack": {
     "description": [
+      "",
       {
-        "text": "◆ STARK FFA",
+        "text": "⚡ ",
+        "color": "#FFB547"
+      },
+      {
+        "text": "ꜱ",
         "color": "#3FE0FF",
         "bold": true
       },
       {
-        "text": "\nMenus, icons, badges & weapon tooltips",
-        "color": "#8A96A8"
+        "text": "ᴛ",
+        "color": "#69E7FF",
+        "bold": true
+      },
+      {
+        "text": "ᴀ",
+        "color": "#94EEFF",
+        "bold": true
+      },
+      {
+        "text": "ʀ",
+        "color": "#BEF5FF",
+        "bold": true
+      },
+      {
+        "text": "ᴋ",
+        "color": "#E8FCFF",
+        "bold": true
+      },
+      {
+        "text": " ",
+        "color": "#BEF5FF",
+        "bold": true
+      },
+      {
+        "text": "ꜰ",
+        "color": "#94EEFF",
+        "bold": true
+      },
+      {
+        "text": "ꜰ",
+        "color": "#69E7FF",
+        "bold": true
+      },
+      {
+        "text": "ᴀ",
+        "color": "#3FE0FF",
+        "bold": true
+      },
+      {
+        "text": " ⚡",
+        "color": "#FFB547"
+      },
+      {
+        "text": "\n"
+      },
+      {
+        "text": "ᴏꜰꜰɪᴄɪᴀʟ ᴘᴀᴄᴋ",
+        "color": "#C9D2DE"
+      },
+      {
+        "text": " · ",
+        "color": "#5B6575"
+      },
+      {
+        "text": "ꜱᴛᴀʀᴋꜰꜰᴀ.xʏᴢ",
+        "color": "#3FE0FF"
       }
     ],
     "min_format": [
@@ -18,6 +78,23 @@
     "max_format": [
       97,
       1
+    ]
+  },
+  "overlays": {
+    "entries": [
+      {
+        "min_format": 75,
+        "max_format": 75,
+        "directory": "stark_text_75"
+      },
+      {
+        "min_format": [
+          97,
+          0
+        ],
+        "max_format": 97,
+        "directory": "stark_text_97"
+      }
     ]
   }
 }
