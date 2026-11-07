@@ -7,7 +7,7 @@ def gui_bg(accent, rows=6):
     W,H=176, 17+rows*18+97+8   # 222 for 6 rows
     H=114+rows*18
     im=Image.new("RGBA",(W,H),(0,0,0,0)); d=ImageDraw.Draw(im)
-    d.rounded_rectangle([0,0,W-1,H-1],radius=5,fill=SL1+(250,),outline=SL3+(255,))
+    d.rounded_rectangle([0,0,W-1,H-1],radius=5,fill=SL1+(255,),outline=SL3+(255,))
     # header glow line
     for x in range(6,W-6):
         t=abs((x-W/2)/(W/2-6)); c=lerp(accent,SL2,t**1.6)
@@ -31,7 +31,7 @@ def kitb_bg():
     import pix5
     rows = 6; W, H = 176, 114 + rows * 18
     im = Image.new("RGBA", (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
-    d.rounded_rectangle([0, 0, W - 1, H - 1], radius=5, fill=SL1 + (250,), outline=SL3 + (255,))
+    d.rounded_rectangle([0, 0, W - 1, H - 1], radius=5, fill=SL1 + (255,), outline=SL3 + (255,))
     for x in range(6, W - 6):
         t = abs((x - W / 2) / (W / 2 - 6)); c = lerp(CY, SL2, t ** 1.6)
         im.putpixel((x, 15), c + (255,))

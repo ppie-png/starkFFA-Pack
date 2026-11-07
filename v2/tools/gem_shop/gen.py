@@ -119,14 +119,14 @@ def background(rows):
     y0, y1 = 17, 17 + rows * 18
     for y in range(y0, y1 + 1):
         for x in range(7, 169):
-            px[x, y] = PANEL + (250,)
+            px[x, y] = PANEL + (255,)
     # soft gem glow in the open panel (very faint) + a faint lower edge line
     cx, cy = 88, (y0 + y1) / 2
     for y in range(y0, y1 + 1):
         for x in range(7, 169):
             d = math.hypot((x - cx) / 82.0, (y - cy) / (rows * 11.0))
             k = max(0.0, 1.0 - d) ** 1.6 * 0.07
-            px[x, y] = mix(PANEL, GEM2, k) + (250,)
+            px[x, y] = mix(PANEL, GEM2, k) + (255,)
     return im
 
 def tier_background():
