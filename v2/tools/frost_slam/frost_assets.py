@@ -329,8 +329,10 @@ def weapon_model():
         # vanilla handheld_mace with the z angle reduced by 45 deg: the model stands upright, vanilla's flat mace is diagonal
         'thirdperson_righthand': {'rotation': [0, -90, 10], 'translation': [0, 4.0, 1], 'scale': [1, 1, 1]},
         'thirdperson_lefthand': {'rotation': [0, 90, -10], 'translation': [0, 4.0, 1], 'scale': [1, 1, 1]},
-        'firstperson_righthand': {'rotation': [0, -90, -20], 'translation': [0, 3, 0.8], 'scale': [0.9, 0.9, 0.9]},
-        'firstperson_lefthand': {'rotation': [0, 90, 20], 'translation': [0, 3, 0.8], 'scale': [0.9, 0.9, 0.9]},
+        # r39 (Lunar test 07.11.): the r38 pose ([0,-90,-20], [0,3,0.8], 0.9 = vanilla handheld_mace size) filled the right
+        # third of the screen and covered the scoreboard - smaller, lower, more upright; 4 poses compared in the real client
+        'firstperson_righthand': {'rotation': [0, -90, -5], 'translation': [0.5, 1.0, -0.6], 'scale': [0.75, 0.75, 0.75]},
+        'firstperson_lefthand': {'rotation': [0, 90, 5], 'translation': [0.5, 1.0, -0.6], 'scale': [0.75, 0.75, 0.75]},
         'gui': {'rotation': [0, 0, -45], 'translation': [0.3, 0.6, 0], 'scale': [0.84, 0.84, 0.84]},
         'ground': {'rotation': [0, 0, -45], 'translation': [0, 2, 0], 'scale': [0.42, 0.42, 0.42]},
         'fixed': {'rotation': [0, 180, -45], 'translation': [0, 0, 0], 'scale': [0.7, 0.7, 0.7]},
