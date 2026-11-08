@@ -1,6 +1,6 @@
 """Rank icons (pack r29, owner picked style B "icon + small caps"): 8x8 pixel icons in font starkffa:ranks,
 height 8 / ascent 7 like the scoreboard icons. U+E330 owner (crown), E331 admin (red shield), E332 mod (blue shield),
-E333 helper (cyan heart), E334 media (pink play button), E335 stark (gold star), E336 storm (violet bolt),
+E333 helper (cyan heart), E334 media (white play button, cyan/pink glitch - r44), E335 stark (gold star), E336 storm (violet bolt),
 E337 booster (pink gem), E338 spark (green sparkle). The text next to it is MiniMessage small caps (config)."""
 import io, json
 from PIL import Image
@@ -9,7 +9,7 @@ PAL = {".": None, "k": (16, 20, 28), "w": (255, 255, 255),
        "r": (255, 77, 94), "R": (255, 150, 160), "d": (176, 34, 56),                   # red
        "b": (63, 140, 255), "B": (150, 200, 255), "n": (30, 78, 196),                  # blue
        "c": (63, 224, 255), "C": (190, 248, 255), "e": (16, 148, 188),                 # cyan
-       "p": (255, 77, 141), "P": (255, 186, 214), "q": (196, 40, 100),                 # pink
+       "p": (255, 77, 141), "P": (255, 186, 214), "q": (196, 40, 100), "s": (255, 156, 194),  # pink
        "v": (140, 104, 255), "V": (205, 192, 255), "u": (90, 60, 210),                 # violet
        "m": (226, 92, 255), "M": (246, 196, 255), "x": (150, 70, 230),                 # magenta
        "g": (46, 214, 134), "G": (176, 255, 214), "h": (20, 150, 96)}                  # green
@@ -18,7 +18,7 @@ ICONS = [
  ("admin",   [".kkkkkk.", "kRRrrrdk", "kRrrrrdk", "krrrrrdk", "krrrrrdk", ".krrrdk.", "..krdk..", "...kk..."]),
  ("mod",     [".kkkkkk.", "kBBbbbnk", "kBbbbbnk", "kbbbbbnk", "kbbbbbnk", ".kbbbnk.", "..kbnk..", "...kk..."]),
  ("helper",  [".kk..kk.", "kCckkcek", "kCccccek", "kcccccek", ".kcccek.", "..kcek..", "...kk...", "........"]),
- ("media",   [".kkkkkk.", "kPpppppk", "kpwppppk", "kpwwpppk", "kpwwwppk", "kpwwpppk", "kpwpppqk", ".kkkkkk."]),
+ ("media",   [".kk.....", ".kwkk...", ".kwwwkk.", "ckwwwwwk", "ckwwwwsk", ".kwwskk.", ".kskk...", ".kk....."]),   # r44 pixel play + glitch
  ("stark",   ["...kk...", "..kYyk..", "kkkYykkk", "kYYYyyok", ".kYyyok.", ".kyyook.", "kyokkook", "kkk..kkk"]),
  ("storm",   ["....kkk.", "...kVvk.", "..kVvk..", ".kVvvvk.", ".kkvvk..", "..kvuk..", ".kuk....", ".kk....."]),
  ("booster", ["..kkkk..", ".kMMmxk.", "kMMmmmxk", "kkkkkkkk", ".kmmmmk.", "..kmxk..", "...kk...", "........"]),
