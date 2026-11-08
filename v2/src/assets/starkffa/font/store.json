@@ -1,0 +1,20 @@
+{
+ "providers": [
+  {
+   "type": "bitmap",
+   "file": "starkffa:font/store/banner.png",
+   "height": 92,
+   "ascent": 92,
+   "chars": [
+    "\ue000\ue001\ue002\ue003"
+   ]
+  },
+  {
+   "type": "space",
+   "advances": {
+    "\uf801": -1,
+    "\uf802": 1
+   }
+  }
+ ]
+}
