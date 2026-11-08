@@ -26,12 +26,12 @@ layout(location = 1) out float cylindricalVertexDistance;
 layout(location = 2) out vec4 vertexColor;
 layout(location = 3) out vec2 texCoord0;
 
-// ---- STARK FFA name styles (pack r40, StarkCore cosmetics/NameStyle) ----
+// ---- STARK FFA name styles (pack r40, r43: + rank styles SPARK / STARK / STORM; StarkCore cosmetics/NameStyle) ----
 // Animated text is sent in EXACT marker colours (8 per style, table below = the fallback gradient on clients without
 // this shader); its black shadow is rgb(6, 3, 16 + style). Every other colour is drawn exactly as before.
-const int STARK_STYLES = 10;
-const int STARK_KIND[10] = int[10](0, 1, 2, 3, 4, 5, 6, 7, 0, 0);
-const ivec3 STARK_PAL[80] = ivec3[80](
+const int STARK_STYLES = 13;
+const int STARK_KIND[13] = int[13](0, 1, 2, 3, 4, 5, 6, 7, 0, 0, 6, 8, 2);
+const ivec3 STARK_PAL[104] = ivec3[104](
     ivec3(253, 166, 47), ivec3(253, 178, 71), ivec3(253, 190, 91), ivec3(253, 206, 111), ivec3(253, 214, 135), ivec3(253, 222, 155), ivec3(253, 230, 175), ivec3(253, 242, 195),
     ivec3(253, 62, 87), ivec3(253, 78, 103), ivec3(253, 98, 123), ivec3(253, 114, 139), ivec3(253, 130, 155), ivec3(253, 146, 167), ivec3(253, 162, 183), ivec3(253, 178, 199),
     ivec3(45, 106, 255), ivec3(53, 126, 255), ivec3(57, 146, 255), ivec3(61, 166, 255), ivec3(65, 186, 255), ivec3(73, 206, 255), ivec3(85, 222, 255), ivec3(93, 242, 255),
@@ -41,7 +41,10 @@ const ivec3 STARK_PAL[80] = ivec3[80](
     ivec3(45, 218, 255), ivec3(73, 222, 255), ivec3(101, 230, 255), ivec3(125, 238, 255), ivec3(149, 242, 255), ivec3(173, 246, 255), ivec3(193, 250, 255), ivec3(217, 250, 255),
     ivec3(157, 122, 255), ivec3(169, 138, 255), ivec3(181, 154, 255), ivec3(193, 170, 255), ivec3(205, 182, 255), ivec3(213, 198, 255), ivec3(225, 214, 255), ivec3(237, 226, 255),
     ivec3(173, 186, 203), ivec3(185, 198, 211), ivec3(197, 206, 219), ivec3(209, 218, 227), ivec3(221, 226, 235), ivec3(229, 234, 243), ivec3(237, 242, 247), ivec3(245, 250, 255),
-    ivec3(225, 94, 255), ivec3(229, 110, 255), ivec3(237, 130, 255), ivec3(241, 146, 255), ivec3(245, 162, 255), ivec3(249, 182, 255), ivec3(253, 198, 255), ivec3(253, 214, 255)
+    ivec3(225, 94, 255), ivec3(229, 110, 255), ivec3(237, 130, 255), ivec3(241, 146, 255), ivec3(245, 162, 255), ivec3(249, 182, 255), ivec3(253, 198, 255), ivec3(253, 214, 255),
+    ivec3(33, 218, 131), ivec3(53, 230, 147), ivec3(73, 238, 167), ivec3(97, 250, 183), ivec3(125, 254, 199), ivec3(157, 254, 211), ivec3(189, 254, 227), ivec3(221, 254, 243),
+    ivec3(253, 154, 27), ivec3(253, 170, 43), ivec3(253, 186, 63), ivec3(253, 198, 79), ivec3(253, 214, 103), ivec3(253, 222, 139), ivec3(253, 234, 171), ivec3(253, 242, 203),
+    ivec3(121, 94, 255), ivec3(117, 106, 255), ivec3(113, 118, 255), ivec3(109, 134, 255), ivec3(101, 150, 255), ivec3(89, 174, 255), ivec3(73, 194, 255), ivec3(61, 218, 255)
 );
 
 const float STARK_TAU = 6.2831853;
@@ -129,11 +132,17 @@ vec4 stark_color(vec4 color, float x, int corner) {
         float own = step(0.9, stark_hash(floor(t * 14.0) + seed * 3.17));
         float burst = step(0.965, stark_hash(floor(t * 7.0) + 0.37));
         rgb = mix(base * (0.82 + 0.18 * sin(x * 0.6 - t * 18.0)), vec3(1.0), max(own, burst) * 0.92);
-    } else {
+    } else if (kind == 7) {
         // PHANTOM: fades in and out like a ghost
         float f = 0.5 + 0.5 * sin(x * 0.07 - t * 1.6);
         alpha = mix(0.42, 1.0, smoothstep(0.15, 0.85, f));
         rgb = mix(base, vec3(0.95, 0.92, 1.0), 0.25 * f);
+    } else {
+        // STARK (rank, r86): a slow, wide gold shine + sparkles twinkling on single letters
+        float d = abs(mod(x - t * 30.0, 160.0) - 80.0);
+        float shine = (1.0 - smoothstep(2.0, 12.0, d)) * 0.75;
+        float tw = pow(max(0.0, sin(t * 1.3 + stark_hash(seed) * STARK_TAU)), 24.0);
+        rgb = mix(base * (0.94 + 0.06 * sin(x * 0.15 - t * 1.1)), vec3(1.0, 0.98, 0.9), clamp(shine + tw * 0.9, 0.0, 1.0));
     }
     if (shadow) rgb = base;
     return vec4(rgb, color.a * alpha);

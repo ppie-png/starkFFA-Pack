@@ -360,6 +360,53 @@ def funnel(w=64, h=128, seed=9):
     return out
 
 
+def cloud(w=128, h=128, seed=21):
+    """r86 storm cloud for the thunderstorm kill effect (camera-facing, square plane like every 'v' sprite): a puffy
+    cumulus in the middle band - overlapping soft round puffs on a flatter base, lit on top, darker underneath (the
+    tint makes it a dark violet storm cloud), soft billowy texture, soft edges"""
+    rnd = random.Random(seed)
+    S = SS
+    W, H = w * S, h * S
+    m = Image.new('L', (W, H), 0)
+    d = ImageDraw.Draw(m)
+    top, base = 0.22, 0.74            # the cloud's band in the square
+    bh = base - top
+    puffs = [(0.50, 0.42, 0.25), (0.31, 0.56, 0.19), (0.69, 0.54, 0.20), (0.15, 0.72, 0.13), (0.86, 0.72, 0.12),
+             (0.41, 0.50, 0.19), (0.60, 0.44, 0.17), (0.23, 0.70, 0.14), (0.77, 0.69, 0.14)]
+    for cx, cy, r in puffs:
+        cx += rnd.uniform(-0.012, 0.012)
+        y = top + cy * bh
+        rr = r * W * 0.5
+        d.ellipse([cx * W - rr * 1.12, y * H - rr, cx * W + rr * 1.12, y * H + rr], fill=255)
+    # the body under the puffs (no holes), a gently rounded belly, then a flat-ish underside
+    d.ellipse([W * 0.10, (top + 0.42 * bh) * H, W * 0.90, (base + 0.06) * H], fill=255)
+    d.rectangle([W * 0.16, (top + 0.5 * bh) * H, W * 0.84, base * H], fill=255)
+    d.rectangle([0, base * H, W, H], fill=0)
+    m = m.filter(ImageFilter.GaussianBlur(S * 1.5))
+    m = m.resize((w, h), Image.LANCZOS).filter(ImageFilter.GaussianBlur(0.9))
+    # billows: smooth noise (blurred random field), two octaves
+    def noise(scale, sd):
+        r = random.Random(sd)
+        n = Image.new('L', (w // scale + 2, h // scale + 2))
+        n.putdata([r.randint(0, 255) for _ in range(n.size[0] * n.size[1])])
+        return n.resize((w, h), Image.BICUBIC).filter(ImageFilter.GaussianBlur(scale * 0.35))
+    n1, n2 = noise(10, seed + 1).load(), noise(4, seed + 2).load()
+    mp = m.load()
+    out = Image.new('RGBA', (w, h), (0, 0, 0, 0))
+    op = out.load()
+    for y in range(h):
+        t = (y / (h - 1) - top) / bh             # 0 top of the band .. 1 underside
+        for x in range(w):
+            a = mp[x, y] / 255.0
+            if a < 0.01:
+                continue
+            g = 255 - 150 * min(1.0, max(0.0, (t - 0.2) / 0.75)) ** 1.15
+            g *= 0.86 + 0.14 * (0.65 * n1[x, y] + 0.35 * n2[x, y]) / 255.0
+            al = min(1.0, a * 1.12) ** 1.35
+            op[x, y] = (int(g), int(g), int(min(255, g * 1.03)), int(al * 240))
+    return out
+
+
 SPRITES = {
     # id: (builder, orientation)  v = camera-facing plane, h = ground decal
     'fx_heart': (heart, 'v'),
@@ -375,6 +422,7 @@ SPRITES = {
     'fx_target': (target, 'h'),
     'fx_wind': (wind, 'h'),
     'fx_funnel': (funnel, 'v'),
+    'fx_cloud': (cloud, 'v'),
 }
 
 

@@ -1,7 +1,7 @@
 """Single source of truth for the animated name styles: exact marker colours (8 per style, ping-pong gradient as the
 fallback look) + the shader kind. Writes the GLSL table and the Java table so both always match."""
 import re, glob, json
-KINDS = ['glint', 'heartbeat', 'tide', 'frost', 'prism', 'blaze', 'volt', 'phantom']
+KINDS = ['glint', 'heartbeat', 'tide', 'frost', 'prism', 'blaze', 'volt', 'phantom', 'stark']
 # id: (name, kind, stops)
 STYLES = [
     ('glint_gold', 'glint', ['#FFA62E', '#FFD27A', '#FFF0C2']),
@@ -14,6 +14,11 @@ STYLES = [
     ('phantom', 'phantom', ['#9F7BFF', '#C7B0FF', '#ECE3FF']),
     ('glint_silver', 'glint', ['#AEB9C8', '#D8DFE8', '#F7F9FC']),
     ('glint_pink', 'glint', ['#E05CFF', '#F59BFF', '#FFD6FF']),
+    # r86 rank exclusives (pack r43): SPARK = green electric strobes, STARK = slow gold shine + sparkles (own kind)
+    ('spark_rank', 'volt', ['#21D982', '#6BFFBE', '#DFFFF0']),
+    ('stark_rank', 'stark', ['#FF9A1A', '#FFCF57', '#FFF3C9']),
+    # STORM = violet -> cyan waves rolling through (rank show title, STORM item names)
+    ('storm_rank', 'tide', ['#7B5CFF', '#6A8CFF', '#3FD8FF']),
 ]
 N = 8
 def hx(h): h = h.lstrip('#'); return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
