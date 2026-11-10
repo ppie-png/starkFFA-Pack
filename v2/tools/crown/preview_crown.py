@@ -209,12 +209,19 @@ def main():
     scale = float(os.environ.get('CROWN_SCALE', '0.72'))
     ty = float(os.environ.get('CROWN_Y', '2.64'))
     spin = float(os.environ.get('CROWN_SPIN', '0'))
-    # crown: model bottom (y 4) sits at ty
-    y_bottom_item = 4 / 16 - 0.5
-    build_model(model, scale, (0, ty - y_bottom_item * scale, 0), spin)
-    steve_head((0, 1.406 + 0.234, 0), 0.469)
-    bar('health', 2.075, 2.30, 0.34, (0.9, 0.2, 0.25, 1))
-    bar('name', 2.334, 2.559, 0.62, (0.95, 0.95, 0.95, 1))
+    head_c = (0, 1.406 + 0.25, 0)
+    if os.environ.get('CROWN_HEADFIT'):
+        # HEAD context: the item model at 0.625 around the head centre (head 0.5 = 8 px, no player scale here)
+        build_model(model, 0.625, head_c, spin)
+        steve_head(head_c, 0.5)
+    else:
+        # crown: model bottom (y 4) sits at ty
+        y_bottom_item = 4 / 16 - 0.5
+        build_model(model, scale, (0, ty - y_bottom_item * scale, 0), spin)
+        steve_head((0, 1.406 + 0.234, 0), 0.469)
+    if not os.environ.get('CROWN_NOBARS'):
+        bar('health', 2.075, 2.30, 0.34, (0.9, 0.2, 0.25, 1))
+        bar('name', 2.334, 2.559, 0.62, (0.95, 0.95, 0.95, 1))
     cam = bpy.data.cameras.new('cam')
     cam.lens = float(os.environ.get('CROWN_LENS', '50'))
     co = bpy.data.objects.new('cam', cam)
@@ -229,6 +236,15 @@ def main():
     elif view == 'close':
         pos = (0.5, 2.95, -1.6)
         target = (0, 2.78, 0)
+    elif view == 'head':
+        pos = (1.1, 2.15, -1.9)
+        target = (0, 1.8, 0)
+    elif view == 'head2':
+        pos = (-1.6, 1.75, -1.2)
+        target = (0, 1.85, 0)
+    elif view == 'head3':
+        pos = (0.4, 2.9, -1.3)
+        target = (0, 1.85, 0)
     elif view == 'low':
         pos = (0.9, 1.62, -4.0)
         target = (0, 2.75, 0)
