@@ -1,6 +1,7 @@
 """r143 hot zone in crisp pixel art (owner 11.11. 21:46, players: "the hot zone looks ugly"): the soft, blurred light
-streaks (fx_beam) become Minecraft-like pixel models - a beacon-style beam for the middle, short light posts for the
-edge, the ground band as a clean 3-tone pixel line with a running glint. Hard pixels, no gradients, no interpolation.
+streaks (fx_beam) become Minecraft-like pixel models - a beacon-style beam for the middle, a low striped light wall
+(like the vanilla world border) and short light posts for the edge, the ground band as a clean 3-tone pixel line with
+a running glint. Hard pixels, no gradients, no interpolation.
 Every model has a live (amber) and a soon (cream, calmer) look, colours baked in (no tint).
 Usage: python3 zone_px.py <assets dir (…/assets)> [preview.png]"""
 import json
@@ -76,6 +77,26 @@ def band(pal, frames=16, glint=3):
     return out
 
 
+def wall(pal, frames=8, alpha_mul=1.0, base=None):
+    """Low light wall like the vanilla world border: diagonal stripes running sideways, stronger at the foot, a bright
+    line on the ground, fading upward in hard steps."""
+    base = base or [25, 25, 25, 25, 50, 50, 50, 50, 80, 80, 80, 80, 115, 115, 115, 115]
+    out = Image.new('RGBA', (16, 16 * frames), (0, 0, 0, 0))
+    for f in range(frames):
+        for y in range(16):
+            for x in range(16):
+                if y == 15:
+                    tone, a = 'light', 230
+                elif (x + y + f) % 8 < 2:
+                    tone, a = 'light', min(220, int(base[y] * 2.2))
+                else:
+                    tone, a = 'amber', base[y]
+                out.putpixel((x, f * 16 + y), pal[tone] + (int(round(a * alpha_mul)),))
+    return out
+
+
+STRONG = [40, 40, 40, 40, 75, 75, 75, 75, 110, 110, 110, 110, 150, 150, 150, 150]
+
 QUAD = {"textures": {"0": None, "particle": None}, "elements": [{"from": [0, 0, 8], "to": [16, 16, 8], "shade": False, "faces": {
     "north": {"uv": [16, 0, 0, 16], "texture": "#0"}, "south": {"uv": [0, 0, 16, 16], "texture": "#0"}}}]}
 
@@ -98,11 +119,14 @@ def main():
     write(assets, 'fx_zone_post', post(LIVE), 32, 2, QUAD)
     write(assets, 'fx_zone_post_soon', post(SOON, alpha_mul=0.8), 32, 3, QUAD)
     write(assets, 'fx_zone_band_px', band(LIVE), 16, 2, band_model)
+    # camera round q_r143c5: the strong stripes read best at eye level (w2) - that is the wall now
+    write(assets, 'fx_zone_wall', wall(LIVE, base=STRONG), 16, 2, QUAD)
+    write(assets, 'fx_zone_wall_soon', wall(SOON, alpha_mul=0.6), 16, 3, QUAD)
     write(assets, 'fx_zone_band_px_soon', band(SOON, glint=2), 16, 3, band_model)
     if len(sys.argv) > 2:
-        prev = Image.new('RGBA', (16 * 6 + 50, 128), (52, 56, 64, 255))
+        prev = Image.new('RGBA', (16 * 8 + 70, 128), (52, 56, 64, 255))
         x = 4
-        for n, fh in (('fx_zone_beacon', 128), ('fx_zone_beacon_soon', 128), ('fx_zone_post', 32), ('fx_zone_post_soon', 32), ('fx_zone_band_px', 16), ('fx_zone_band_px_soon', 16)):
+        for n, fh in (('fx_zone_beacon', 128), ('fx_zone_beacon_soon', 128), ('fx_zone_post', 32), ('fx_zone_post_soon', 32), ('fx_zone_band_px', 16), ('fx_zone_band_px_soon', 16), ('fx_zone_wall', 16), ('fx_zone_wall_soon', 16)):
             im = Image.open(os.path.join(assets, 'starkffa/textures/item', n + '.png')).convert('RGBA').crop((0, 0, 16, fh))
             prev.alpha_composite(im, (x, 0))
             x += 24
