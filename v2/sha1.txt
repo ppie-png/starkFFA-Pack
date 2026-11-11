@@ -11,3 +11,4 @@ d3877e59e8bc3931892836153f06b1b13281f8a6  starkffa-pack-r44.zip
 ac79550a708e315e0ef638e8fab071fe5dedbb2d  starkffa-pack-r45.zip
 22b6b58b59fa2e8e4cb064e3a9c5ead0ad3900c5  starkffa-pack-r46.zip
 430d097fc938cc5eb3dab946c7d9421ba5238b84  starkffa-pack-r47.zip
+cb0dc20c5ab9b0110420c85c91178d86d9f813c0  starkffa-pack-r48.zip
