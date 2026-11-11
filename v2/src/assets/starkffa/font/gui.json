@@ -196,6 +196,15 @@
   },
   {
    "type": "bitmap",
+   "file": "starkffa:font/gui/menu/bg_quests_nb.png",
+   "ascent": 13,
+   "height": 186,
+   "chars": [
+    ""
+   ]
+  },
+  {
+   "type": "bitmap",
    "file": "starkffa:font/gui/menu/bg_gem_cosmetics.png",
    "ascent": 13,
    "height": 186,
